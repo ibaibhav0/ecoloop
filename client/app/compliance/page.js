@@ -21,7 +21,7 @@ import {
   AlertOctagon,
 } from 'lucide-react';
 
-export default function CompliancePage() {
+export default function CompliancePage({ onBack }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [auditRunning, setAuditRunning] = useState(false);
@@ -109,7 +109,9 @@ export default function CompliancePage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button
             onClick={() => {
-              if (typeof window !== 'undefined' && window.history.length > 1) {
+              if (onBack) {
+                onBack();
+              } else if (typeof window !== 'undefined' && window.history.length > 1) {
                 window.history.back();
               } else {
                 window.location.href = '/';

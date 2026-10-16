@@ -17,7 +17,7 @@ export const NAAC_METADATA = {
   criteria: 'Criteria 7: Institutional Values and Best Practices',
   keyIndicator: '7.1 Institutional Values and Social Responsibilities',
   metric: '7.1.3: Management of Degradable and Non-Degradable Waste (E-Waste Management System)',
-  institution: 'NMAM Institute of Technology (Nitte Deemed to be University)',
+  institution: 'Nitte Deemed to be University',
   platform: 'EcoLoop Campus Circular E-Waste Management Network',
   academicYear: 'Academic Year 2025-2026',
 };
@@ -269,7 +269,7 @@ export async function generateNaacPdfBuffer() {
       doc.text('NAAC METRIC 7.1.3 COMPLIANCE & BEST PRACTICE ATTESTATION', 50, signY - 8);
       doc.fillColor('#334155').fontSize(7.5).font('Helvetica');
       doc.text(
-        'Certified that NMAMIT maintains an end-to-end digital circular loop platform (EcoLoop). All e-waste collected across Nandani, Kaveri, Kumardhara, Saupernikha, Shambhavi, and Netravati hostels is weighed on calibrated scales, dispatched exclusively to CPCB-registered recyclers, and tracked from registration to closed-loop recovery.',
+        'Certified that Nitte Deemed to be University maintains an end-to-end digital circular loop platform (EcoLoop). All e-waste collected across Nandani, Kaveri, Kumardhara, Saupernikha, Shambhavi, and Netravati hostels is weighed on calibrated scales, dispatched exclusively to CPCB-registered recyclers, and tracked from registration to closed-loop recovery.',
         50,
         signY + 6,
         { width: 495 }

@@ -23,7 +23,7 @@ const getCampusDomains = () => {
   if (envDomains) {
     return envDomains.split(',').map(d => d.trim().toLowerCase().replace(/^@/, ''));
   }
-  return ['ecoloop.campus', 'nmamit.in', 'nitte.edu.in'];
+  return ['ecoloop.campus', 'nitte.edu.in'];
 };
 
 class CampusErpService {

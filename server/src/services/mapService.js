@@ -1,8 +1,8 @@
 import { ItemStore } from '../data/store.js';
 
 /**
- * Real Campus Collection Points on NMAMIT Campus (Nitte, Karkala, Udupi District, Karnataka)
- * Exact GPS coordinates on NMAMIT campus (13.18°N, 74.93°E)
+ * Real Campus Collection Points on Nitte Deemed to be University Campus (Nitte, Karkala, Udupi District, Karnataka)
+ * Exact GPS coordinates on Nitte campus (13.18°N, 74.93°E)
  */
 export const CAMPUS_COLLECTION_POINTS = [
   {
@@ -108,7 +108,7 @@ export const CAMPUS_COLLECTION_POINTS = [
     department: 'Computer Science & Engineering',
     lat: 13.1828,
     lng: 74.9338,
-    locationDesc: 'Ground Floor Atrium, CSE & IT Academic Quad, NMAMIT',
+    locationDesc: 'Ground Floor Atrium, CSE & IT Academic Quad, Nitte Campus',
     operatingHours: '8:30 AM - 5:30 PM (Mon - Sat)',
     binCapacityKg: 100,
     acceptedTypes: ['Laptop / Computer', 'Circuit Board / PCB', 'Mobile Phone / Tablet', 'Peripherals'],
@@ -375,7 +375,7 @@ export async function getMapData(userLat, userLng, studentHostel = '') {
   return {
     success: true,
     campus: {
-      name: 'NMAM Institute of Technology (Nitte Deemed to be University)',
+      name: 'Nitte Deemed to be University',
       address: 'Nitte, Karkala Taluk, Udupi District, Karnataka - 574110',
       coordinates: { lat: campusCenterLat, lng: campusCenterLng },
     },

@@ -116,7 +116,7 @@ EcoLoop transforms the campus circular economy into a frictionless WhatsApp conv
    WHATSAPP_ACCESS_TOKEN=<YOUR_META_PERMANENT_ACCESS_TOKEN>
    WHATSAPP_VERIFY_TOKEN=ecoloop_mission_verify_token_2026
    MONGODB_URI=mongodb+srv://<USER>:<PASS>@<CLUSTER>.mongodb.net/ecoloop?retryWrites=true&w=majority
-   CAMPUS_NAME="NMAM Institute of Technology, Nitte"
+   CAMPUS_NAME="Nitte Deemed to be University"
    ```
 5. Click **Deploy Web Service**.
 

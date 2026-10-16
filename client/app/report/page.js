@@ -12,7 +12,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 
-export default function NaacReportPage() {
+export default function NaacReportPage({ onBack }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
@@ -71,7 +71,7 @@ export default function NaacReportPage() {
   const naac = data?.naac || {
     criteria: 'Criteria 7: Institutional Values and Best Practices',
     metric: '7.1.3: Management of Degradable and Non-Degradable Waste (E-Waste Management System)',
-    institution: 'NMAM Institute of Technology (Nitte Deemed to be University)',
+    institution: 'Nitte Deemed to be University',
     academicYear: 'Academic Year 2025-2026',
   };
   const hostelBreakdown = data?.hostelBreakdown || [];
@@ -84,7 +84,9 @@ export default function NaacReportPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button
             onClick={() => {
-              if (typeof window !== 'undefined' && window.history.length > 1) {
+              if (onBack) {
+                onBack();
+              } else if (typeof window !== 'undefined' && window.history.length > 1) {
                 window.history.back();
               } else {
                 window.location.href = '/';
@@ -120,8 +122,8 @@ export default function NaacReportPage() {
           <div className="spacex-caption text-[#ffffff]">
             // NAAC CRITERION 7 DISCLOSURE • METRIC 7.1.3
           </div>
-          <h1 className="font-['D-DIN-Bold'] text-2xl sm:text-4xl font-black text-[#ffffff] uppercase tracking-tight">
-            {naac.institution}
+          <h1 className="font-['Barlow_Condensed'] text-2xl sm:text-4xl font-black text-[#ffffff] uppercase tracking-tight">
+            Nitte Deemed to be University
           </h1>
           <p className="text-xs font-mono text-[#5a5a5f]">
             Internal Quality Assurance Cell (IQAC) • Statutory Environmental Audit

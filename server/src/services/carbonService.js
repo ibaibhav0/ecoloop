@@ -303,7 +303,7 @@ export async function generateStudentCarbonCertificatePdf(user) {
       // Certificate bottom line
       doc.fillColor('#94a3b8').fontSize(7.5).font('Helvetica');
       doc.text(
-        `Issued on: ${certificate.issueDate} • NMAMIT Campus • CPCB EPR Portal: https://eprewastecpcb.in`,
+        `Issued on: ${certificate.issueDate} • Nitte Deemed to be University • CPCB EPR Portal: https://eprewastecpcb.in`,
         40,
         542,
         { align: 'center', width: 762 }

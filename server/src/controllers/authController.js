@@ -164,7 +164,7 @@ export const getMe = async (req, res) => {
         email: user.email,
         phone: user.phone || '',
         role: user.role,
-        institutionName: user.institutionName || 'NMAM Institute of Technology',
+        institutionName: user.institutionName || 'Nitte Deemed to be University',
         hostel: user.hostel,
         department: user.department || '',
         studentId: user.studentId || '',
@@ -216,7 +216,7 @@ export const registerWithOtp = async (req, res) => {
       role = 'student',
       hostel = 'Nandani',
       department = '',
-      institutionName = 'NMAM Institute of Technology',
+      institutionName = 'Nitte Deemed to be University',
       phone = '',
       studentId = '',
     } = req.body;

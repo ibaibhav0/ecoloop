@@ -780,7 +780,7 @@ export default function AdminDashboardPage() {
               <div className="bg-[#0a0a0a] border border-[#3a3a3f] p-5">
                 <span className="spacex-caption block">AUTHORIZED DOMAINS</span>
                 <p className="font-mono text-xs text-white mt-2">
-                  @ecoloop.campus, @nmamit.in
+                  @ecoloop.campus, @nitte.edu.in
                 </p>
                 <span className="spacex-caption text-[11px] text-[#5a5a5f] block mt-1">
                   UNAUTHORIZED DOMAINS REJECTED

@@ -82,7 +82,7 @@ export const getTotalStats = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      campus: 'NMAMIT Campus Circular Network (Nitte Deemed to be University)',
+      campus: 'Nitte Deemed to be University',
       region: 'Karkala / Udupi / Dakshina Kannada, Karnataka',
       totalItems: items.length,
       totalWeightKg: Number(totalWeightKg.toFixed(2)),

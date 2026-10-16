@@ -22,7 +22,7 @@ Access requires an API Key passed via:
 *Pre-seeded Sandbox Key*: \`ecoloop_live_public_key_2026_demo\`
     `,
     contact: {
-      name: 'EcoLoop Collegiate Technology Team • NMAMIT',
+      name: 'EcoLoop Collegiate Technology Team • Nitte Deemed to be University',
       email: 'api@ecoloop.campus',
       url: 'http://localhost:3000',
     },
@@ -157,7 +157,7 @@ Access requires an API Key passed via:
         type: 'object',
         properties: {
           success: { type: 'boolean', example: true },
-          campus: { type: 'string', example: 'NMAMIT Campus Circular Network' },
+          campus: { type: 'string', example: 'Nitte Deemed to be University' },
           totalItems: { type: 'integer', example: 15 },
           totalWeightKg: { type: 'number', example: 24.8 },
           verifiedRecycledKg: { type: 'number', example: 9.5 },

@@ -20,4 +20,4 @@ services:
       - key: BASE_URL
         sync: false
       - key: CAMPUS_NAME
-        value: "NMAM Institute of Technology, Nitte"
+        value: "Nitte Deemed to be University"

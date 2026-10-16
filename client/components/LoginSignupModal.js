@@ -192,7 +192,7 @@ export default function LoginSignupModal({ isOpen, onClose }) {
               <div className="flex items-center justify-between mb-2">
                 <label className="spacex-caption">CAMPUS EMAIL IDENTIFIER</label>
                 <span className="spacex-caption text-[#ffffff]">
-                  @ecoloop.campus / @nmamit.in
+                  @ecoloop.campus / @nitte.edu.in
                 </span>
               </div>
               <div className="relative">

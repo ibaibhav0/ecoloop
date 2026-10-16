@@ -18,7 +18,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 
-export default function CampusMapPage() {
+export default function CampusMapPage({ onBack }) {
   const { user } = useAuth();
   const [mapData, setMapData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -89,7 +89,9 @@ export default function CampusMapPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => {
-                if (typeof window !== 'undefined' && window.history.length > 1) {
+                if (onBack) {
+                  onBack();
+                } else if (typeof window !== 'undefined' && window.history.length > 1) {
                   window.history.back();
                 } else {
                   window.location.href = '/';
@@ -514,7 +516,7 @@ export default function CampusMapPage() {
               <h3 className="font-['D-DIN-Bold'] text-2xl text-[#ffffff] uppercase tracking-wider">
                 {viewMode === 'recyclers' ? 'CPCB-AUTHORISED RECYCLERS MANIFEST' : 'CAMPUS COLLECTION POINTS DIRECTORY'}
               </h3>
-              <span className="spacex-caption">NMAMIT CAMPUS NITTE &amp; CPCB REGISTER</span>
+              <span className="spacex-caption">NITTE DEEMED TO BE UNIVERSITY &amp; CPCB REGISTER</span>
             </div>
             <div className="spacex-caption">
               REFERENCE: {mapData?.referenceLocation?.name || 'NANDANI HOSTEL'}

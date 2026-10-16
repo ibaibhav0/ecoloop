@@ -18,7 +18,7 @@ const DEMO_STUDENTS = [
   { id: '4NM22ME112', name: 'Rohit Shetty', email: 'rohit@ecoloop.campus', hostel: 'Kumardhara', note: '6.2 kg recycled • 8.93 kg CO2 • 0.4 trees' },
 ];
 
-export default function PersonalImpactStoryPage() {
+export default function PersonalImpactStoryPage({ onBack }) {
   const { user } = useAuth();
   const [selectedStudent, setSelectedStudent] = useState(user?.studentId || '4NM22CS045');
   const [storyData, setStoryData] = useState(null);
@@ -89,7 +89,9 @@ export default function PersonalImpactStoryPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button
             onClick={() => {
-              if (typeof window !== 'undefined' && window.history.length > 1) {
+              if (onBack) {
+                onBack();
+              } else if (typeof window !== 'undefined' && window.history.length > 1) {
                 window.history.back();
               } else {
                 window.location.href = '/';

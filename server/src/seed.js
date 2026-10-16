@@ -138,11 +138,11 @@ export const seedDatabase = async (force = false) => {
   // 5. College / Academic Department Account
   await UserStore.create({
     name: 'Dept of Computer Science & Engineering',
-    email: 'cse.hod@nmamit.campus',
+    email: 'cse.hod@nitte.edu.in',
     phone: '+918258281263',
     password: collegePw,
     role: 'college',
-    institutionName: 'NMAM Institute of Technology (Nitte Deemed University)',
+    institutionName: 'Nitte Deemed to be University',
     department: 'Computer Science & Engineering',
     hostel: 'Yourspace',
     erpVerified: true,

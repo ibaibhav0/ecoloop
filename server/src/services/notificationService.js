@@ -214,7 +214,7 @@ class NotificationService {
           </p>
         </div>
         <div style="background-color: #f1f5f9; padding: 16px 24px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
-          NMAMIT Campus E-Waste Initiative • Hostels: Nandani, Kaveri, Kumardhara, Saupernikha, Shambhavi, Netravati
+          Nitte Deemed to be University E-Waste Initiative • Hostels: Nandani, Kaveri, Kumardhara, Saupernikha, Shambhavi, Netravati
         </div>
       </div>
     `;

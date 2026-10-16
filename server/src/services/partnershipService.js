@@ -371,7 +371,7 @@ export const DEFAULT_BULK_PICKUPS = [
     pickupAddress: 'Tiger Circle Ward Office, Manipal, Udupi - 576104',
     assignedCollector: 'Piyush Raj (Campus Collection Lead)',
     status: 'in_progress',
-    notes: 'Student volunteers from NMAMIT partnering with local ward councillors for doorstep collection.',
+    notes: 'Student volunteers from Nitte Deemed to be University partnering with local ward councillors for doorstep collection.',
   },
   {
     referenceCode: 'BULK-2026-SAAHAS-003',
@@ -484,7 +484,7 @@ export async function getAggregatedCampusEwasteData() {
       guarantee: 'All individual identifiers (student names, roll numbers, emails, hostel room numbers, contact phones) have been stripped. Data is strictly presented in aggregate form for public municipal benchmarking.',
     },
     aggregatedTotals: {
-      campusName: 'NMAMIT Campus Circular Network (Nitte Deemed to be University)',
+      campusName: 'Nitte Deemed to be University Campus Circular Network',
       region: 'Karkala / Udupi / Dakshina Kannada, Karnataka',
       totalItemsCollected: totalItemsCount,
       totalWeightDivertedKg: Number(totalDivertedKg.toFixed(2)),

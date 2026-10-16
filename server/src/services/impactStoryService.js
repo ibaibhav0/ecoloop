@@ -134,9 +134,9 @@ class ImpactStoryService {
 
     // 6. Pre-filled Social Media Sharing Templates
     const shareUrl = 'https://ecoloop.campus';
-    const tweetText = `Proud to share my personal impact story with @EcoLoopCampus! 🌱 I recycled ${displayWeight} kg of e-waste, saving ${displayCo2} kg of CO2 — that's like planting ${displayTrees} trees! Verified circular chain of custody at NMAMIT. #EcoLoop #SustainableCampus #CircularEconomy`;
+    const tweetText = `Proud to share my personal impact story with @EcoLoopCampus! 🌱 I recycled ${displayWeight} kg of e-waste, saving ${displayCo2} kg of CO2 — that's like planting ${displayTrees} trees! Verified circular chain of custody at Nitte Deemed to be University. #EcoLoop #SustainableCampus #CircularEconomy`;
     const linkedInText = `I just reviewed my personal environmental impact story on EcoLoop Campus E-Waste Platform. By responsibly recycling ${displayWeight} kg of e-waste from Hostel ${user.hostel || 'Nandani'}, I prevented ${displayCo2} kg of CO2e greenhouse gas emissions — equivalent to planting ${displayTrees} trees! All numbers calculated from official chain-of-custody data and cited via the UN Global E-waste Monitor 2024 & US EPA.`;
-    const whatsAppText = `Hey! 🌱 Check out my e-waste recycling impact on EcoLoop:\n\n✨ Recycled: ${displayWeight} kg of e-waste\n🌍 CO2 Saved: ${displayCo2} kg of CO2\n🌲 Tree Equivalent: ${displayTrees} trees planted\n\nVerified circular tracking at NMAMIT! Let's make our campus greener! 🚀`;
+    const whatsAppText = `Hey! 🌱 Check out my e-waste recycling impact on EcoLoop:\n\n✨ Recycled: ${displayWeight} kg of e-waste\n🌍 CO2 Saved: ${displayCo2} kg of CO2\n🌲 Tree Equivalent: ${displayTrees} trees planted\n\nVerified circular tracking at Nitte Deemed to be University! Let's make our campus greener! 🚀`;
 
     const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
     const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;

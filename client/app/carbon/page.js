@@ -14,7 +14,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 
-export default function CarbonCreditsPage() {
+export default function CarbonCreditsPage({ onBack }) {
   const { user } = useAuth();
   const [campusData, setCampusData] = useState(null);
   const [certData, setCertData] = useState(null);
@@ -107,7 +107,9 @@ export default function CarbonCreditsPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => {
-                if (typeof window !== 'undefined' && window.history.length > 1) {
+                if (onBack) {
+                  onBack();
+                } else if (typeof window !== 'undefined' && window.history.length > 1) {
                   window.history.back();
                 } else {
                   window.location.href = '/';

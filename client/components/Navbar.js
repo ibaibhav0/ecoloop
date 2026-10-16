@@ -20,6 +20,7 @@ import {
   ShieldCheck,
   Building2,
   Code2,
+  ArrowLeft,
 } from 'lucide-react';
 
 export default function Navbar({
@@ -75,18 +76,34 @@ export default function Navbar({
       {/* SpaceX Ultra-Clean Single-Tier Navbar */}
       <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between gap-6">
         
-        {/* Brand: SpaceX-style bold geometric typography */}
-        <div
-          onClick={() => {
-            setActiveTab('dashboard');
-            setIsMobileMenuOpen(false);
-          }}
-          className="cursor-pointer select-none flex items-center gap-2 group"
-        >
-          <span className="font-['Barlow_Condensed'] text-2xl font-black tracking-[4px] text-[#ffffff] uppercase transition-transform duration-300 group-hover:scale-105">
-            ECOLOOP
-          </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-white opacity-60 ml-0.5" />
+        {/* Brand & Back Button */}
+        <div className="flex items-center gap-3">
+          {activeTab !== 'dashboard' && (
+            <button
+              onClick={() => {
+                setActiveTab('dashboard');
+                setIsMobileMenuOpen(false);
+              }}
+              className="btn-spacex py-1.5 px-3 text-xs flex items-center gap-1.5 font-bold cursor-pointer"
+              title="Return to Overview"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back</span>
+            </button>
+          )}
+
+          <div
+            onClick={() => {
+              setActiveTab('dashboard');
+              setIsMobileMenuOpen(false);
+            }}
+            className="cursor-pointer select-none flex items-center gap-2 group"
+          >
+            <span className="font-['Barlow_Condensed'] text-2xl font-black tracking-[4px] text-[#ffffff] uppercase transition-transform duration-300 group-hover:scale-105">
+              ECOLOOP
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-white opacity-60 ml-0.5" />
+          </div>
         </div>
 
         {/* Center: SpaceX Clean Uppercase Horizontal Links (Desktop) */}

@@ -30,7 +30,7 @@ import {
   X,
 } from 'lucide-react';
 
-export default function PartnershipPortalPage() {
+export default function PartnershipPortalPage({ onBack }) {
   const [activeTab, setActiveTab] = useState('hotspots'); // 'hotspots', 'aggregated', 'drives', 'directory'
   const [selectedCity, setSelectedCity] = useState('All');
   const [hotspotsData, setHotspotsData] = useState(null);
@@ -164,13 +164,15 @@ export default function PartnershipPortalPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => {
-                if (typeof window !== 'undefined' && window.history.length > 1) {
+                if (onBack) {
+                  onBack();
+                } else if (typeof window !== 'undefined' && window.history.length > 1) {
                   window.history.back();
                 } else {
                   window.location.href = '/';
                 }
               }}
-              className="inline-flex items-center gap-2 text-[12px] uppercase tracking-wider font-bold text-[#ffffff] border border-[#3a3a3f] hover:border-[#ffffff] px-4 py-2 rounded-full transition-all cursor-pointer bg-transparent"
+              className="btn-spacex"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               BACK

@@ -245,17 +245,17 @@ export default function Home() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
         {/* Universal Back to Last Page Bar */}
         {activeTab !== 'dashboard' && (
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#3a3a3f] pb-4">
+          <div className="sticky top-16 z-30 bg-[#000000] border-b border-[#3a3a3f] py-3 mb-8 flex flex-wrap items-center justify-between gap-4">
             <button
               onClick={handleGoBack}
-              className="btn-spacex"
+              className="btn-spacex py-2 px-5 text-xs font-bold flex items-center gap-2 cursor-pointer"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back</span>
+              <ArrowLeft className="w-4 h-4" />
+              <span>← Back to Overview</span>
             </button>
             <div className="flex items-center gap-2">
               <span className="spacex-caption">VIEW:</span>
-              <span className="font-['D-DIN-Bold'] uppercase text-xs tracking-[1.17px] text-[#ffffff]">
+              <span className="font-['Barlow_Condensed'] uppercase text-xs tracking-[1.5px] text-[#ffffff] font-bold">
                 {TAB_LABELS[activeTab] || activeTab}
               </span>
             </div>
@@ -323,6 +323,7 @@ export default function Home() {
         {/* VIEW 2: 50+ Products Catalog (Students & Colleges) */}
         {activeTab === 'catalog' && (
           <ProductsCatalogView
+            onBack={handleGoBack}
             onQuickRegisterItem={(item) => {
               setSelectedCatalogItem(item);
               setIsRegisterOpen(true);
@@ -360,31 +361,31 @@ export default function Home() {
         )}
 
         {/* VIEW 4: Campus Map View */}
-        {activeTab === 'map' && <CampusMapPage />}
+        {activeTab === 'map' && <CampusMapPage onBack={handleGoBack} />}
 
         {/* VIEW 5: Carbon Credits & Personal Certificates */}
-        {activeTab === 'carbon' && <CarbonCreditsPage />}
+        {activeTab === 'carbon' && <CarbonCreditsPage onBack={handleGoBack} />}
 
         {/* VIEW 6: Personal Impact Story & Social Share */}
-        {activeTab === 'story' && <PersonalImpactStoryPage />}
+        {activeTab === 'story' && <PersonalImpactStoryPage onBack={handleGoBack} />}
 
         {/* VIEW 7: NAAC Criterion 7 E-Waste Report */}
-        {activeTab === 'report' && <NaacReportPage />}
+        {activeTab === 'report' && <NaacReportPage onBack={handleGoBack} />}
 
         {/* VIEW 8: 30-Day SLA & Recycler Expiry Compliance */}
-        {activeTab === 'compliance' && <CompliancePage />}
+        {activeTab === 'compliance' && <CompliancePage onBack={handleGoBack} />}
 
         {/* VIEW 9: Municipality & NGO Partnership Portal */}
-        {activeTab === 'partners' && <PartnershipPortalPage />}
+        {activeTab === 'partners' && <PartnershipPortalPage onBack={handleGoBack} />}
 
         {/* VIEW 10: Public REST API & Swagger Documentation */}
-        {activeTab === 'developers' && <DevelopersPortalPage />}
+        {activeTab === 'developers' && <DevelopersPortalPage onBack={handleGoBack} />}
 
         {/* VIEW 11: Hostel & Department Leaderboard */}
-        {activeTab === 'leaderboard' && <LeaderboardView />}
+        {activeTab === 'leaderboard' && <LeaderboardView onBack={handleGoBack} />}
 
         {/* VIEW 12: Impact Analytics */}
-        {activeTab === 'analytics' && <AnalyticsView />}
+        {activeTab === 'analytics' && <AnalyticsView onBack={handleGoBack} />}
       </main>
 
       {/* Unified Single-Page Footer: Austere SpaceX Aerospace Bar */}

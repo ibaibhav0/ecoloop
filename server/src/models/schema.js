@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
     },
     institutionName: {
       type: String,
-      default: 'NMAM Institute of Technology',
+      default: 'Nitte Deemed to be University',
       trim: true,
     },
     hostel: {

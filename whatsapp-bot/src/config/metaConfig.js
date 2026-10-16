@@ -11,5 +11,5 @@ export const metaConfig = {
   graphApiUrl: `https://graph.facebook.com/v21.0/${process.env.WHATSAPP_PHONE_NUMBER_ID || 'dummy_id'}/messages`,
   openAiApiKey: process.env.OPENAI_API_KEY || '',
   cpcbPortalUrl: process.env.CPCB_PORTAL_URL || 'https://eprewastecpcb.in',
-  campusName: process.env.CAMPUS_NAME || 'NMAM Institute of Technology, Nitte',
+  campusName: process.env.CAMPUS_NAME || 'Nitte Deemed to be University',
 };

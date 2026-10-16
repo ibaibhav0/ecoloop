@@ -19,7 +19,7 @@ import {
   BookOpen,
 } from 'lucide-react';
 
-export default function DevelopersPortalPage() {
+export default function DevelopersPortalPage({ onBack }) {
   const [apiKey, setApiKey] = useState('ecoloop_live_public_key_2026_demo');
   const [selectedEndpoint, setSelectedEndpoint] = useState('stats'); // 'stats', 'items', 'register', 'keys'
   const [codeLanguage, setCodeLanguage] = useState('curl'); // 'curl', 'javascript', 'python'
@@ -200,7 +200,9 @@ export default function DevelopersPortalPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button
             onClick={() => {
-              if (typeof window !== 'undefined' && window.history.length > 1) {
+              if (onBack) {
+                onBack();
+              } else if (typeof window !== 'undefined' && window.history.length > 1) {
                 window.history.back();
               } else {
                 window.location.href = '/';
