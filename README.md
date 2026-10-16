@@ -1,7 +1,14 @@
 # EcoLoop 🔄
 > **Campus E-Waste Collection & Lifecycle Tracking Platform**
 
-EcoLoop is a full-stack campus e-waste collection and tracking platform connecting **Students**, **Campus Collection Teams**, **Admins**, and **Authorised Recyclers**. Every electronic item gets a digital passport and unique QR code tracking its entire lifecycle from registration to verified sustainable recycling.
+[![Live App on Vercel](https://img.shields.io/badge/Vercel-Live%20Platform-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://ecoloop-campus.vercel.app)
+[![API Backend on Vercel](https://img.shields.io/badge/API-REST%20Backend-000000?style=for-the-badge&logo=node.js&logoColor=white)](https://ecoloop-api-campus.vercel.app/api/health)
+
+- **Production Web Application**: [https://ecoloop-campus.vercel.app](https://ecoloop-campus.vercel.app)
+- **Production REST API**: [https://ecoloop-api-campus.vercel.app/api](https://ecoloop-api-campus.vercel.app/api)
+- **Interactive Swagger Docs**: [https://ecoloop-api-campus.vercel.app/docs](https://ecoloop-api-campus.vercel.app/docs)
+
+EcoLoop is a full-stack campus e-waste collection and tracking platform connecting **Students**, **Campus Collection Teams**, **Admins**, and **Authorised Recyclers**. Every electronic item gets a digital passport and unique QR code tracking its entire lifecycle from registration to verified sustainable recycling. Designed with an austere, aerospace-grade SpaceX aesthetic.
 
 ---
 
