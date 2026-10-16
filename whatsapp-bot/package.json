@@ -1,0 +1,36 @@
+{
+  "name": "ecoloop-whatsapp-bot",
+  "version": "1.0.0",
+  "description": "EcoLoop WhatsApp Bot - Mission-driven campus e-waste collection, tracking, and compliance platform",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "seed": "node src/seed.js",
+    "simulate": "node src/simulate.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "cloud-api",
+    "meta",
+    "e-waste",
+    "ecoloop",
+    "circular-economy",
+    "cpcb",
+    "qr-code"
+  ],
+  "author": "EcoLoop Engineering",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jimp": "^0.22.12",
+    "jsqr": "^1.4.0",
+    "mongoose": "^8.9.5",
+    "pdfkit": "^0.15.2",
+    "qrcode": "^1.5.4"
+  }
+}
