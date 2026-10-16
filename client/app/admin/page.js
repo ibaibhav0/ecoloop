@@ -344,6 +344,16 @@ export default function AdminDashboardPage() {
             >
               <ArrowLeft className="w-3.5 h-3.5" /> BACK
             </button>
+            <button
+              onClick={() => {
+                logout();
+                window.location.href = '/';
+              }}
+              className="btn-spacex !text-xs !py-2 !px-4 border-[#3a3a3f] hover:border-white text-white cursor-pointer"
+              title="Sign Out"
+            >
+              <LogOut className="w-3.5 h-3.5 text-[#888891]" /> SIGN OUT
+            </button>
           </div>
         </div>
       </header>

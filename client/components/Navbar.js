@@ -107,14 +107,14 @@ export default function Navbar({
         </div>
 
         {/* Center: SpaceX Clean Uppercase Horizontal Links (Desktop) */}
-        <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+        <nav className="hidden xl:flex items-center space-x-3 2xl:space-x-5">
           {PRIMARY_NAV.map((item) => {
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`cursor-pointer bg-transparent border-0 p-0 text-[13px] font-['Barlow_Condensed'] font-bold tracking-[1.4px] uppercase transition-all duration-200 relative py-1 ${
+                className={`cursor-pointer bg-transparent border-0 p-0 text-[12px] 2xl:text-[13px] font-['Barlow_Condensed'] font-bold tracking-[1.1px] 2xl:tracking-[1.3px] uppercase transition-all duration-200 relative py-1 ${
                   isActive
                     ? 'text-[#ffffff] after:content-[\'\'] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#ffffff]'
                     : 'text-[#888891] hover:text-[#ffffff]'
@@ -126,23 +126,23 @@ export default function Navbar({
           })}
         </nav>
 
-        {/* Right: Boxed Dropdown Button matching "UPCOMING LAUNCHES ⌄" */}
-        <div className="flex items-center gap-3">
+        {/* Right: Actions, Register, and Direct Sign Out Button */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           
           {/* Quick Register Ghost Button (Desktop) */}
           <button
             onClick={onOpenRegister}
-            className="hidden sm:inline-flex btn-spacex py-1.5 px-3 text-[12px]"
+            className="hidden sm:inline-flex btn-spacex py-1.5 px-3 text-[12px] whitespace-nowrap shrink-0 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Register Item</span>
           </button>
 
           {/* SpaceX Styled Box Dropdown Button */}
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative shrink-0" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="spacex-dropdown-box cursor-pointer"
+              className="spacex-dropdown-box cursor-pointer whitespace-nowrap"
               aria-expanded={isDropdownOpen}
             >
               <span className="font-['Barlow_Condensed'] text-[12px] font-bold tracking-[1.3px]">
@@ -270,6 +270,18 @@ export default function Navbar({
             )}
           </div>
 
+          {/* Direct Top-Right Sign Out Button */}
+          {user && (
+            <button
+              onClick={logout}
+              className="btn-spacex py-1.5 px-3 text-[12px] flex items-center gap-1.5 whitespace-nowrap shrink-0 border-[#3a3a3f] hover:border-white text-[#ffffff] cursor-pointer transition-all"
+              title={`Sign out (${user.name}) so another user can sign in`}
+            >
+              <LogOut className="w-3.5 h-3.5 text-[#888891]" />
+              <span className="font-['Barlow_Condensed'] uppercase tracking-[1.2px] font-bold">Sign Out</span>
+            </button>
+          )}
+
           {/* Mobile Menu Hamburger */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -328,6 +340,19 @@ export default function Navbar({
               <span>Scanner</span>
             </button>
           </div>
+
+          {user && (
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                logout();
+              }}
+              className="w-full btn-spacex text-xs py-2.5 text-[#ffffff] border-[#3a3a3f] hover:border-white flex items-center justify-center gap-2 mt-2 cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5 text-[#888891]" />
+              <span className="font-['Barlow_Condensed'] uppercase tracking-[1.2px] font-bold">Sign Out ({user.name})</span>
+            </button>
+          )}
         </div>
       )}
 
