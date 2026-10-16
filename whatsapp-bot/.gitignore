@@ -2,3 +2,5 @@ node_modules/
 .env
 npm-debug.log*
 .DS_Store
+public/qr/*.png
+public/reports/*.pdf
