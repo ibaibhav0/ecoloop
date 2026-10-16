@@ -10,7 +10,7 @@ services:
       - key: PORT
         value: 10000
       - key: WHATSAPP_VERIFY_TOKEN
-        generateValue: true
+        value: ecoloop_mission_verify_token_2026
       - key: WHATSAPP_PHONE_NUMBER_ID
         sync: false
       - key: WHATSAPP_ACCESS_TOKEN

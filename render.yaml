@@ -1,0 +1,48 @@
+services:
+  # 1. EcoLoop WhatsApp Bot Service
+  - type: web
+    name: ecoloop-whatsapp-bot
+    env: node
+    plan: free
+    rootDir: whatsapp-bot
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: WHATSAPP_VERIFY_TOKEN
+        value: ecoloop_mission_verify_token_2026
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_ACCESS_TOKEN
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: BASE_URL
+        sync: false
+      - key: CAMPUS_NAME
+        value: "Nitte Deemed to be University"
+
+  # 2. EcoLoop Backend REST API Server
+  - type: web
+    name: ecoloop-api-server
+    env: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: "https://ecoloop-campus.vercel.app"
