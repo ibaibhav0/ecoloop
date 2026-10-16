@@ -12,6 +12,7 @@ import StudentDashboard from '@/components/StudentDashboard';
 import RequestsTable from '@/components/RequestsTable';
 import LeaderboardView from '@/components/LeaderboardView';
 import AnalyticsView from '@/components/AnalyticsView';
+import SpacexHeroShowcase from '@/components/SpacexHeroShowcase';
 
 // Sub-Portal Single-Page Views
 import CampusMapPage from '@/app/map/page';
@@ -227,6 +228,17 @@ export default function Home() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* SpaceX Full-Bleed Electronic Showcase Hero (Overview) */}
+      {activeTab === 'dashboard' && (
+        <SpacexHeroShowcase
+          onOpenRegister={() => {
+            setSelectedCatalogItem(null);
+            setIsRegisterOpen(true);
+          }}
+          onNavigateTab={handleTabChange}
+        />
       )}
 
       {/* Main Single-Page Dynamic View */}

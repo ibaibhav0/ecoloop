@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700;1,800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import url('https://fonts.cdnfonts.com/css/d-din');
 @import "tailwindcss";
 
@@ -7,7 +8,7 @@
   --color-primary: #ffffff;
   --color-body: #f0f0fa;
   --color-border: #3a3a3f;
-  --color-muted: #5a5a5f;
+  --color-muted: #888891;
   --color-light: #ffffff;
 }
 
@@ -20,24 +21,29 @@
 html, body {
   background-color: #000000 !important;
   color: #f0f0fa !important;
-  font-family: 'D-DIN', Arial, sans-serif !important;
-  font-size: 16px;
+  font-family: 'Barlow', 'D-DIN', Arial, sans-serif !important;
+  font-size: 15px;
   line-height: 1.6;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
 
-/* SpaceX Typography */
+/* SpaceX Typography: Bold Condensed Uppercase Headlines */
 h1, h2, h3, h4, h5, h6,
 .spacex-header,
 .font-display {
-  font-family: 'D-DIN-Bold', 'D-DIN', 'Arial Narrow', sans-serif !important;
+  font-family: 'Barlow Condensed', 'D-DIN-Bold', 'D-DIN', 'Arial Narrow', sans-serif !important;
   text-transform: uppercase !important;
   color: #ffffff !important;
-  line-height: 1.1 !important;
-  letter-spacing: 0.5px !important;
-  font-weight: 700 !important;
+  line-height: 0.95 !important;
+  letter-spacing: 0.8px !important;
+  font-weight: 800 !important;
+}
+
+[class*="font-['D-DIN-Bold']"],
+[class*="font-['D-DIN']"] {
+  font-family: 'Barlow Condensed', 'D-DIN-Bold', 'D-DIN', 'Arial Narrow', sans-serif !important;
 }
 
 p, span, div, li, td, th {
@@ -48,42 +54,38 @@ p, span, div, li, td, th {
 .spacex-caption,
 .micro-caption,
 label {
-  font-family: 'D-DIN-Bold', 'Arial Narrow', sans-serif !important;
+  font-family: 'Barlow Condensed', 'D-DIN-Bold', 'Arial Narrow', sans-serif !important;
   text-transform: uppercase !important;
   font-size: 12px !important;
-  letter-spacing: 0.96px !important;
-  color: #5a5a5f !important;
+  letter-spacing: 1.5px !important;
+  font-weight: 700 !important;
+  color: #888891 !important;
 }
 
-/* SpaceX Ghost / Outlined Pill Button:
-   transparent background, white 1px border, pill shape (32px radius), white text.
-   Hover: invert to white background with black text. */
-button:not(.no-spacex),
+/* SpaceX Ghost Button (STARMIND -> style) */
 .btn-spacex,
 .btn-pill,
 a.btn-spacex {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: transparent !important;
-  border: 1px solid #ffffff !important;
-  border-radius: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background-color: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 3px !important;
   color: #ffffff !important;
-  font-family: 'D-DIN-Bold', 'Arial Narrow', sans-serif !important;
+  font-family: 'Barlow Condensed', 'D-DIN-Bold', sans-serif !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: 1.17px !important;
-  padding: 10px 24px !important;
-  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease !important;
-  cursor: pointer;
+  letter-spacing: 1.5px !important;
+  padding: 10px 22px !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
   text-decoration: none !important;
-  box-shadow: none !important;
-  background-image: none !important;
+  backdrop-filter: blur(8px) !important;
 }
 
-button:not(.no-spacex):hover,
 .btn-spacex:hover,
 .btn-pill:hover,
 a.btn-spacex:hover {
@@ -92,18 +94,73 @@ a.btn-spacex:hover {
   border-color: #ffffff !important;
 }
 
-button:not(.no-spacex):disabled {
+.btn-spacex:disabled {
   opacity: 0.35 !important;
   cursor: not-allowed !important;
   background-color: transparent !important;
   color: #ffffff !important;
 }
 
+/* Large Hero Ghost Button */
+.btn-spacex-hero {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.7) !important;
+  border-radius: 3px !important;
+  color: #ffffff !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  padding: 12px 28px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.btn-spacex-hero:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+/* SpaceX Top Dropdown Box (matches UPCOMING LAUNCHES ⌄ from Image 2) */
+.spacex-dropdown-box {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(12px) !important;
+  border-radius: 4px !important;
+  padding: 6px 14px !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 1.2px !important;
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.spacex-dropdown-box:hover {
+  border-color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
 /* Secondary muted button */
 .btn-spacex-muted {
   border-color: #3a3a3f !important;
   color: #f0f0fa !important;
+  background: transparent !important;
 }
+
 .btn-spacex-muted:hover {
   background-color: #ffffff !important;
   color: #000000 !important;
@@ -115,9 +172,9 @@ input, select, textarea {
   background-color: #0a0a0a !important;
   border: 1px solid #3a3a3f !important;
   color: #f0f0fa !important;
-  border-radius: 0px !important;
-  font-family: 'D-DIN', Arial, sans-serif !important;
-  font-size: 15px !important;
+  border-radius: 2px !important;
+  font-family: 'Barlow', Arial, sans-serif !important;
+  font-size: 14px !important;
   outline: none !important;
   box-shadow: none !important;
 }
@@ -138,40 +195,34 @@ table {
 }
 
 th {
-  font-family: 'D-DIN-Bold', 'Arial Narrow', sans-serif !important;
+  font-family: 'Barlow Condensed', 'D-DIN-Bold', sans-serif !important;
   text-transform: uppercase !important;
   font-size: 12px !important;
-  letter-spacing: 0.96px !important;
-  color: #5a5a5f !important;
+  letter-spacing: 1.2px !important;
+  color: #888891 !important;
   border-bottom: 1px solid #3a3a3f !important;
-  padding: 16px 12px !important;
+  padding: 14px 12px !important;
   background-color: #000000 !important;
   text-align: left;
 }
 
 td {
-  border-bottom: 1px solid #3a3a3f !important;
-  padding: 16px 12px !important;
+  border-bottom: 1px solid #27272a !important;
+  padding: 14px 12px !important;
   color: #f0f0fa !important;
   font-size: 14px !important;
   background-color: transparent !important;
 }
 
 tr:hover td {
-  background-color: #0a0a0a !important;
-}
-
-/* Elimination of gradients, colorful shadows, card rounding */
-div, section, main, header, footer, nav {
-  box-shadow: none !important;
-  text-shadow: none !important;
+  background-color: #0d0d0f !important;
 }
 
 /* Full-bleed dividers */
 hr, .border-divider {
   border: 0;
-  border-top: 1px solid #3a3a3f;
-  margin: 32px 0;
+  border-top: 1px solid #27272a;
+  margin: 28px 0;
 }
 
 /* Custom SpaceX minimal scrollbars */
@@ -189,12 +240,21 @@ hr, .border-divider {
   background: #5a5a5f;
 }
 
-/* Full bleed utility */
-.full-bleed {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+/* SpaceX Image Vignette Overlay */
+.spacex-hero-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.45) 50%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+}
+
+.spacex-hero-side-overlay {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
 }

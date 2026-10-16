@@ -116,16 +116,25 @@ export default function LoginGate({ onExploreCatalog }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] text-[#f0f0fa] flex flex-col justify-between">
-      {/* Header */}
-      <header className="border-b border-[#3a3a3f] px-6 py-6">
+    <div className="relative min-h-screen bg-[#000000] text-[#f0f0fa] flex flex-col justify-between overflow-hidden">
+      {/* Background Image of Electronic Items Behind Text */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('/images/hero-circuit.jpg')` }}
+      />
+      {/* SpaceX Dark Vignette & Gradient Overlays for High Legibility */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-black via-black/85 to-black/60" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-black via-transparent to-black/80" />
+
+      {/* SpaceX Ultra-Clean Header */}
+      <header className="relative z-10 border-b border-[#3a3a3f]/60 backdrop-blur-md px-6 py-5 bg-black/40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="font-['D-DIN-Bold'] text-2xl tracking-[3px] text-[#ffffff] uppercase">
+            <span className="font-['Barlow_Condensed'] text-2xl font-black tracking-[4px] text-[#ffffff] uppercase">
               ECOLOOP
             </span>
             <span className="text-[#3a3a3f]">/</span>
-            <span className="spacex-caption">CLOSED LOOP SYSTEM</span>
+            <span className="spacex-caption text-[#888891]">CLOSED LOOP MISSION</span>
           </div>
 
           {onExploreCatalog && (
@@ -137,37 +146,52 @@ export default function LoginGate({ onExploreCatalog }) {
         </div>
       </header>
 
-      {/* Main Full-Bleed Content */}
-      <main className="max-w-7xl mx-auto px-6 py-16 w-full flex-1 flex flex-col justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+      {/* Main Full-Bleed Content with Electronic Hardware Behind */}
+      <main className="relative z-10 max-w-7xl mx-auto px-6 py-14 w-full flex-1 flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Left Column: Mission Overview */}
-          <div className="lg:col-span-6 space-y-8">
-            <div className="spacex-caption">// MISSION OBJECTIVE: 0% LANDFILL</div>
+          {/* Left Column: SpaceX Text Over Background Image */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="spacex-caption text-[#888891] tracking-[2px]">
+              // CAMPUS RECOVERY MISSION: ZERO LANDFILL
+            </div>
 
-            <h1 className="font-['D-DIN-Bold'] text-5xl md:text-7xl font-black text-[#ffffff] tracking-tight uppercase leading-[0.95]">
-              CAMPUS E-WASTE RECOVERY
+            <h1 className="font-['Barlow_Condensed'] text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#ffffff] tracking-tight uppercase leading-[0.92]">
+              DECOMMISSIONING
+              <br />
+              <span className="text-white/90">CAMPUS E-WASTE</span>
+              <br />
+              <span className="text-white/70">AT SCALE</span>
             </h1>
 
-            <p className="text-[#f0f0fa] text-base leading-relaxed max-w-xl">
+            <p className="text-[#d4d4d8] text-base sm:text-lg leading-relaxed max-w-xl font-normal">
               Precision material reclamation across student hostels and institutional laboratories. Decommissioning computational hardware, scientific instrumentation, and consumer electronics under statutory CPCB Rules 2022.
             </p>
 
-            <div className="border-t border-[#3a3a3f] pt-8 grid grid-cols-2 gap-8 max-w-lg">
+            <div className="pt-2 flex flex-wrap gap-4">
+              {onExploreCatalog && (
+                <button onClick={onExploreCatalog} className="btn-spacex-hero">
+                  <span>Explore 50+ Products</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            <div className="border-t border-[#3a3a3f]/70 pt-6 grid grid-cols-2 gap-6 max-w-lg">
               <div>
-                <div className="font-['D-DIN-Bold'] text-3xl font-bold text-[#ffffff] uppercase tracking-wider">
-                  01 // STUDENT
+                <div className="font-['Barlow_Condensed'] text-2xl sm:text-3xl font-bold text-[#ffffff] uppercase tracking-wider">
+                  01 // HOSTELS
                 </div>
-                <p className="spacex-caption mt-2">
+                <p className="spacex-caption mt-1.5 text-xs text-[#888891]">
                   Personal devices, certified weight ledger, real-time CO2 offset telemetry.
                 </p>
               </div>
 
               <div>
-                <div className="font-['D-DIN-Bold'] text-3xl font-bold text-[#ffffff] uppercase tracking-wider">
+                <div className="font-['Barlow_Condensed'] text-2xl sm:text-3xl font-bold text-[#ffffff] uppercase tracking-wider">
                   02 // LABS
                 </div>
-                <p className="spacex-caption mt-2">
+                <p className="spacex-caption mt-1.5 text-xs text-[#888891]">
                   Batch lab decommissioning, server clusters, NAAC Form-6 audit documentation.
                 </p>
               </div>
@@ -175,7 +199,7 @@ export default function LoginGate({ onExploreCatalog }) {
           </div>
 
           {/* Right Column: Austere Terminal Auth Box */}
-          <div className="lg:col-span-6 border border-[#3a3a3f] bg-[#0a0a0a] p-8 md:p-12">
+          <div className="lg:col-span-6 border border-[#3a3a3f] bg-[#09090b]/90 backdrop-blur-xl p-8 md:p-10 shadow-2xl">
             
             {/* Mode Switcher */}
             <div className="flex border-b border-[#3a3a3f] pb-6 mb-8 gap-8">
