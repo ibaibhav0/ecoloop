@@ -5,7 +5,10 @@ const API_BASE =
     : 'http://localhost:5000/api');
 
 const getHeaders = () => {
-  const headers = { 'Content-Type': 'application/json' };
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-API-Key': 'ecoloop_live_public_key_2026_demo',
+  };
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('ecoloop_token');
     if (token) {

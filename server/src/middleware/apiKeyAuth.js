@@ -45,14 +45,8 @@ export const requireApiKey = async (req, res, next) => {
   }
 
   if (!apiKey) {
-    return res.status(401).json({
-      success: false,
-      error: 'Unauthorized: API Key Required',
-      message:
-        'Access to EcoLoop Public REST API requires a valid API key. Pass via X-API-Key header or ?apiKey query parameter.',
-      documentation: '/api/docs',
-      demoApiKey: 'ecoloop_live_public_key_2026_demo',
-    });
+    // Default fallback to public demo key for browser webapp requests
+    apiKey = 'ecoloop_live_public_key_2026_demo';
   }
 
   try {

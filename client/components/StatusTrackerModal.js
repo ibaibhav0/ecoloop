@@ -13,6 +13,8 @@ import {
   MapPin,
   ShieldCheck,
   ArrowRight,
+  Utensils,
+  Gift,
 } from 'lucide-react';
 import { formatHostel, formatLocation } from '@/lib/formatHostel';
 
@@ -166,6 +168,43 @@ export default function StatusTrackerModal({ itemId, isOpen, onClose, onViewQr }
                 </button>
               </div>
             </div>
+
+            {/* Quality & Food Coupon Card */}
+            {item.foodCoupon && (
+              <div className="p-4 bg-[#0a0a0c] border-2 border-[#ffffff] text-xs relative overflow-hidden">
+                <div className="flex items-center justify-between border-b border-[#27272a] pb-2 mb-3">
+                  <div className="flex items-center gap-2">
+                    <Utensils className="w-4 h-4 text-[#ffffff]" />
+                    <span className="font-['D-DIN-Bold'] uppercase tracking-wider text-sm text-[#ffffff]">
+                      INSTANT FOOD COURT VOUCHER REWARD
+                    </span>
+                  </div>
+                  <span className="px-2 py-0.5 text-[10px] font-mono uppercase bg-[#ffffff] text-[#000000] font-bold">
+                    QUALITY: {item.foodCoupon.grade || 'GRADE A'}
+                  </span>
+                </div>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div className="space-y-1">
+                    <p className="font-['D-DIN-Bold'] text-base text-[#ffffff] uppercase tracking-wide">
+                      {item.foodCoupon.title}
+                    </p>
+                    <p className="text-[11px] text-[#a1a1aa] font-mono">
+                      {item.foodCoupon.description} • {item.foodCoupon.outlet}
+                    </p>
+                    <p className="text-[10px] text-[#71717a] font-mono">
+                      Valid Until: {item.foodCoupon.validUntil} • Show code at billing counter
+                    </p>
+                  </div>
+                  <div className="bg-[#000000] border border-[#ffffff]/50 px-4 py-2.5 text-center w-full sm:w-auto shrink-0">
+                    <span className="spacex-caption block text-[9px]">REDEEM CODE</span>
+                    <span className="font-mono text-sm font-bold text-[#ffffff] tracking-wider">
+                      {item.foodCoupon.couponCode}
+                    </span>
+                    <span className="block text-[10px] text-[#22c55e] font-mono font-bold mt-0.5">₹{item.foodCoupon.value} Value</span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Item Details and Photo */}
             <div className="flex gap-4 p-4 bg-[#000000] border border-[#3a3a3f] text-xs">

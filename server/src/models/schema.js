@@ -88,6 +88,21 @@ const eWasteItemSchema = new mongoose.Schema(
     pickupDate: { type: String, default: '' },
     location: { type: String, default: '' },
     notes: { type: String, default: '' },
+    conditionQuality: {
+      type: String,
+      default: 'Grade B - Good / Repairable',
+    },
+    foodCoupon: {
+      couponCode: { type: String, default: '' },
+      grade: { type: String, default: '' },
+      title: { type: String, default: '' },
+      value: { type: String, default: '' },
+      outlet: { type: String, default: '' },
+      description: { type: String, default: '' },
+      validUntil: { type: String, default: '' },
+      status: { type: String, default: 'available' },
+      issuedAt: { type: Date, default: null },
+    },
   },
   { timestamps: true }
 );

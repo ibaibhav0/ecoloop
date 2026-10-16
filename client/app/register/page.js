@@ -409,14 +409,17 @@ export default function RegisterEWastePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
               {/* QR Code Container */}
               <div className="border border-[#3a3a3f] bg-[#0a0a0a] p-8 text-center flex flex-col items-center">
-                <div className="p-4 bg-[#ffffff] border border-[#3a3a3f] mb-6">
-                  {registeredItem.qrCode ? (
-                    <img src={registeredItem.qrCode} alt="Item QR" className="w-56 h-56 object-contain" />
-                  ) : (
-                    <div className="w-56 h-56 flex items-center justify-center bg-[#0a0a0a] text-[#5a5a5f] font-mono text-xs">
-                      QR CODE UNAVAILABLE
-                    </div>
-                  )}
+                <div className="p-4 bg-[#ffffff] border border-[#3a3a3f] mb-6 shadow-xl">
+                  <img
+                    src={
+                      registeredItem.qrCode ||
+                      `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(
+                        registeredItem.trackingCode
+                      )}`
+                    }
+                    alt="Item QR"
+                    className="w-56 h-56 object-contain"
+                  />
                 </div>
 
                 <div className="font-mono text-base font-bold text-[#ffffff] tracking-widest border border-[#3a3a3f] px-4 py-1.5 mb-6 bg-[#000000]">

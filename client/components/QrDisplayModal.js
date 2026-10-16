@@ -75,14 +75,22 @@ export default function QrDisplayModal({ item, isOpen, onClose, onSchedule }) {
           </div>
 
           {/* QR Code Container */}
-          <div className="p-4 bg-[#ffffff] border border-[#3a3a3f] mb-6">
-            {item.qrCode ? (
-              <img src={item.qrCode} alt="Item QR" className="w-48 h-48 object-contain" />
-            ) : (
-              <div className="w-48 h-48 flex items-center justify-center bg-[#0a0a0a] text-[#5a5a5f] text-xs font-mono">
-                QR CODE NOT GENERATED
-              </div>
-            )}
+          <div className="p-4 bg-[#ffffff] border border-[#3a3a3f] mb-6 shadow-xl">
+            <img
+              src={
+                item.qrCode ||
+                `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=10&data=${encodeURIComponent(
+                  JSON.stringify({
+                    trackingCode: item.trackingCode,
+                    type: item.type,
+                    approxWeight: item.approxWeight,
+                    userHostel: item.userHostel,
+                  })
+                )}`
+              }
+              alt={`QR Tag ${item.trackingCode}`}
+              className="w-48 h-48 object-contain"
+            />
           </div>
 
           {/* Details */}

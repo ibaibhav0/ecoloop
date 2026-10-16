@@ -78,6 +78,89 @@ export default function StudentDashboard({
         </div>
       </section>
 
+      {/* Food Coupons Rewards Section */}
+      <section className="border border-[#3a3a3f] bg-[#0a0a0a] p-6 sm:p-8 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#3a3a3f] pb-4">
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">🍔</span>
+            <div>
+              <div className="spacex-caption text-[#10b981] font-bold">
+                // CAMPUS CIRCULAR FOOD INCENTIVE REWARDS
+              </div>
+              <h2 className="font-['D-DIN-Bold'] text-2xl text-white uppercase tracking-wider mt-0.5">
+                MY FOOD COURT VOUCHERS &amp; MEAL COUPONS
+              </h2>
+            </div>
+          </div>
+          <span className="spacex-caption font-mono text-xs">
+            INSTANTLY ISSUED ON DEPOT HANDOVER
+          </span>
+        </div>
+
+        {items.filter((i) => i.foodCoupon && i.foodCoupon.couponCode).length === 0 ? (
+          <div className="bg-[#000000] border border-[#27272a] p-6 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="space-y-1">
+              <span className="spacex-caption text-[#38bdf8]">// QUALITY-BASED FOOD REWARD SYSTEM</span>
+              <p className="font-['Barlow_Condensed'] font-bold text-lg text-white uppercase tracking-wide">
+                Drop off hardware to instantly earn Free Campus Food Vouchers!
+              </p>
+              <p className="text-xs text-[#888891] font-mono max-w-xl">
+                Grade A (Working/Mint): <span className="text-white font-bold">₹180 Meal Combo</span> • Grade B (Repairable): <span className="text-white font-bold">₹100 Dosa/Sandwich + Juice</span> • Grade C (Scrap): <span className="text-white font-bold">₹50 Coffee &amp; Snack</span>.
+              </p>
+            </div>
+            <Link href="/register" className="btn-spacex shrink-0 whitespace-nowrap">
+              <span>Register Item to Claim Food</span>
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {items
+              .filter((i) => i.foodCoupon && i.foodCoupon.couponCode)
+              .map((item) => {
+                const coupon = item.foodCoupon;
+                return (
+                  <div
+                    key={item._id || item.trackingCode}
+                    className="border border-[#10b981] bg-[#000000] p-5 space-y-4 flex flex-col justify-between relative overflow-hidden"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-[10px] font-bold text-black bg-[#10b981] px-2 py-0.5 uppercase tracking-wider">
+                          {coupon.grade || 'VERIFIED DROP-OFF'}
+                        </span>
+                        <span className="font-mono text-xs font-bold text-[#10b981]">
+                          {coupon.value} FREE
+                        </span>
+                      </div>
+
+                      <h3 className="font-['D-DIN-Bold'] text-base text-white uppercase leading-snug">
+                        {coupon.title}
+                      </h3>
+                      <p className="text-[11px] text-[#888891] font-mono leading-relaxed">
+                        {coupon.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-[#27272a] space-y-2 text-xs font-mono">
+                      <div className="bg-[#0a0a0a] border border-[#3a3a3f] p-2.5 text-center">
+                        <span className="spacex-caption block text-[9px] mb-1">REDEEM CODE AT COUNTER:</span>
+                        <span className="font-mono text-base font-bold text-white tracking-widest selection:bg-white selection:text-black">
+                          {coupon.couponCode}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-[11px] text-[#888891]">
+                        <span>OUTLET: {coupon.outlet?.split('&')[0] || 'Food Court'}</span>
+                        <span className="text-[#10b981]">Valid 30 Days</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        )}
+      </section>
+
       {/* Primary Actions Track */}
       <section className="flex flex-wrap items-center justify-between gap-6 border-b border-[#3a3a3f] pb-8">
         <div>

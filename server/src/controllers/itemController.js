@@ -345,10 +345,53 @@ export const scanLookup = async (req, res) => {
   }
 };
 
+function generateFoodCoupon(quality) {
+  const normQuality = String(quality || '').toLowerCase();
+  const randomSuffix = Math.random().toString(36).substring(2, 7).toUpperCase();
+
+  if (normQuality.includes('a') || normQuality.includes('excellent') || normQuality.includes('working')) {
+    return {
+      couponCode: `NITTE-DELUXE-${randomSuffix}`,
+      grade: 'Grade A (Excellent / Working)',
+      title: 'FREE DELUXE CAMPUS MEAL COMBO + COLD DRINK',
+      value: '₹180',
+      outlet: 'Nitte Central Food Court & Nescafe Lounge',
+      description: '1x Complete Deluxe Hot Meal (Burger/Rice Bowl) + 1x Cold Beverage. 100% Free for contributing premium working e-waste.',
+      validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB'),
+      status: 'available',
+      issuedAt: new Date(),
+    };
+  } else if (normQuality.includes('b') || normQuality.includes('good') || normQuality.includes('repairable')) {
+    return {
+      couponCode: `NITTE-FEAST-${randomSuffix}`,
+      grade: 'Grade B (Good / Minor Wear)',
+      title: 'FREE SPECIAL MASALA DOSA / GRILLED SANDWICH + JUICE',
+      value: '₹100',
+      outlet: 'Campus Cafeteria & Fast Food Center',
+      description: '1x Special Masala Dosa or Toasted Sandwich + 1x Fresh Fruit Juice. 100% Free for dropping off repairable electronics.',
+      validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB'),
+      status: 'available',
+      issuedAt: new Date(),
+    };
+  } else {
+    return {
+      couponCode: `NITTE-SNACK-${randomSuffix}`,
+      grade: 'Grade C (Scrap / Recyclable)',
+      title: 'FREE ICED COFFEE / CHAI & FRESH SAMOSA COMBO',
+      value: '₹50',
+      outlet: 'All Campus Food Kiosks & Cafeterias',
+      description: '1x Cold Coffee or Hot Masala Chai + 2x Crispy Samosas. 100% Free for responsible e-waste recycling.',
+      validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB'),
+      status: 'available',
+      issuedAt: new Date(),
+    };
+  }
+}
+
 export const collectItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const { actualWeight, location = '', notes = '' } = req.body;
+    const { actualWeight, location = '', notes = '', conditionQuality = 'Grade B - Good / Repairable' } = req.body;
 
     const weightNum = parseFloat(actualWeight);
     if (isNaN(weightNum) || weightNum <= 0) {
@@ -363,10 +406,15 @@ export const collectItem = async (req, res) => {
     // Calculate reward points: 10 points per kg collected!
     const pointsAwarded = Math.round(weightNum * 10);
 
+    // Generate Instant Campus Food Coupon based on Hardware Quality
+    const foodCoupon = generateFoodCoupon(conditionQuality);
+
     const updatedItem = await ItemStore.updateById(item._id, {
       actualWeight: weightNum,
       status: 'collected',
       location: location || item.location,
+      conditionQuality,
+      foodCoupon,
     });
 
     // Credit reward points to the student user
@@ -383,13 +431,13 @@ export const collectItem = async (req, res) => {
       actorName: req.user.name,
       actorId: (req.user._id || req.user.id).toString(),
       verified: true,
-      notes: `Collected by ${req.user.name}. Verified actual weight: ${weightNum} kg. +${pointsAwarded} reward points credited to student. ${notes ? `(${notes})` : ''}`,
+      notes: `Collected by ${req.user.name}. Verified actual weight: ${weightNum} kg (${conditionQuality}). Issued Food Coupon: ${foodCoupon.couponCode} (${foodCoupon.title}). +${pointsAwarded} reward points credited to student. ${notes ? `(${notes})` : ''}`,
     });
 
     const handovers = await HandoverStore.findByItemId(item._id);
 
     // Trigger Real-Time Notifications
-    // 1. Notify Student via real Email + SMS of collection & points
+    // 1. Notify Student via real Email + SMS of collection & points & Food Coupon
     const studentUser = (await UserStore.findById(item.userId)) || {
       name: item.userName,
       email: item.userEmail,
@@ -407,8 +455,9 @@ export const collectItem = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Item marked as collected! +${pointsAwarded} points credited to student.`,
+      message: `Item marked as collected! +${pointsAwarded} points credited & Campus Food Coupon issued (${foodCoupon.value}).`,
       pointsAwarded,
+      foodCoupon,
       item: updatedItem,
       handovers,
     });
