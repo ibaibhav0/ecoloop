@@ -86,10 +86,10 @@ export default function CollectWeightModal({ item, isOpen, onClose, onSuccess })
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
-      <div className="bg-[#0a0a0a] border border-[#3a3a3f] max-w-md w-full overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs">
+      <div className="bg-[#0a0a0a] border border-[#3a3a3f] max-w-lg w-full overflow-hidden max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="border-b border-[#3a3a3f] p-6 flex items-center justify-between bg-[#000000]">
+        <div className="border-b border-[#3a3a3f] p-4 sm:p-6 flex items-center justify-between shrink-0 bg-[#000000]">
           <div>
             <div className="spacex-caption">// TELEMETRY WEIGH-IN: {item.trackingCode}</div>
             <h2 className="font-['D-DIN-Bold'] text-2xl text-[#ffffff] uppercase tracking-wider mt-1">
@@ -106,7 +106,7 @@ export default function CollectWeightModal({ item, isOpen, onClose, onSuccess })
 
         {issuedCoupon ? (
           /* ISSUED FOOD COUPON CELEBRATION VIEW */
-          <div className="p-6 space-y-6">
+          <div className="p-4 sm:p-6 space-y-6 overflow-y-auto flex-1">
             <div className="border border-[#10b981] bg-[#000000] p-6 text-center space-y-4">
               <div className="w-12 h-12 bg-[#10b981]/20 border border-[#10b981] mx-auto flex items-center justify-center text-2xl">
                 🍔
@@ -163,7 +163,7 @@ export default function CollectWeightModal({ item, isOpen, onClose, onSuccess })
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-6 overflow-y-auto flex-1">
             {error && (
               <div className="p-3 border border-[#ffffff] text-[#ffffff] text-xs flex items-center gap-2 bg-[#000000]">
                 <AlertCircle className="w-4 h-4 shrink-0" />

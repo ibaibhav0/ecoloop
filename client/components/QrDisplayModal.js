@@ -52,10 +52,10 @@ export default function QrDisplayModal({ item, isOpen, onClose, onSchedule }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
-      <div className="bg-[#0a0a0a] border border-[#3a3a3f] max-w-sm w-full overflow-hidden text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs">
+      <div className="bg-[#0a0a0a] border border-[#3a3a3f] max-w-sm w-full overflow-hidden text-center max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="border-b border-[#3a3a3f] p-5 relative bg-[#000000]">
+        <div className="border-b border-[#3a3a3f] p-4 sm:p-5 relative bg-[#000000] shrink-0">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-[#5a5a5f] hover:text-[#ffffff] transition-colors"
@@ -68,7 +68,7 @@ export default function QrDisplayModal({ item, isOpen, onClose, onSchedule }) {
           </h2>
         </div>
 
-        <div className="p-6 flex flex-col items-center">
+        <div className="p-4 sm:p-6 flex flex-col items-center overflow-y-auto flex-1">
           {/* Tracking Code Chip */}
           <div className="px-3 py-1 bg-[#000000] text-[#ffffff] font-mono text-xs font-bold mb-4 border border-[#3a3a3f] tracking-widest">
             {item.trackingCode}
