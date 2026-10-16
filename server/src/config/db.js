@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 let isConnected = false;
-let fallbackMode = false;
+let fallbackMode = !process.env.MONGODB_URI;
 
 export const connectDB = async () => {
   const uri = process.env.MONGODB_URI;
@@ -28,4 +28,4 @@ export const connectDB = async () => {
   }
 };
 
-export const isFallback = () => fallbackMode;
+export const isFallback = () => !isConnected || fallbackMode;

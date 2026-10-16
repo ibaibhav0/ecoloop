@@ -18,6 +18,7 @@ import { complianceService } from './services/complianceService.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './docs/swaggerSpec.js';
 import { seedDatabase } from './seed.js';
+import { UserStore } from './data/store.js';
 
 dotenv.config();
 
@@ -33,6 +34,31 @@ app.use(
 );
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
+
+// Ensure database and seeds are initialized on serverless invocation
+let isInitialized = false;
+export const ensureInitialized = async () => {
+  if (!isInitialized) {
+    await connectDB();
+    await seedDatabase();
+    try {
+      const audit = await complianceService.runComplianceAudit({ notifyAdmin: false });
+      console.log(`🛡️ Compliance Monitor Active: Health Score ${audit.healthScore}/100 | ${audit.totalCriticalBreaches} critical breaches detected.`);
+    } catch (err) {
+      console.warn('⚠️ Initial compliance audit note:', err.message);
+    }
+    isInitialized = true;
+  }
+};
+
+app.use(async (req, res, next) => {
+  try {
+    await ensureInitialized();
+  } catch (err) {
+    console.warn('Initialization error:', err);
+  }
+  next();
+});
 
 // Swagger / OpenAPI Interactive Documentation
 app.get('/api/docs/swagger.json', (req, res) => {
@@ -64,6 +90,19 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+app.get('/api/debug-state', async (req, res) => {
+  try {
+    const students = await UserStore.getAllStudents();
+    res.json({
+      status: 'ok',
+      studentsCount: students.length,
+      students: students.map(s => ({ name: s.name, email: s.email, role: s.role })),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
@@ -90,31 +129,6 @@ app.use((err, req, res, next) => {
     success: false,
     message: err.message || 'Internal Server Error',
   });
-});
-
-// Ensure database and seeds are initialized on serverless invocation
-let isInitialized = false;
-export const ensureInitialized = async () => {
-  if (!isInitialized) {
-    await connectDB();
-    await seedDatabase();
-    try {
-      const audit = await complianceService.runComplianceAudit({ notifyAdmin: false });
-      console.log(`🛡️ Compliance Monitor Active: Health Score ${audit.healthScore}/100 | ${audit.totalCriticalBreaches} critical breaches detected.`);
-    } catch (err) {
-      console.warn('⚠️ Initial compliance audit note:', err.message);
-    }
-    isInitialized = true;
-  }
-};
-
-app.use(async (req, res, next) => {
-  try {
-    await ensureInitialized();
-  } catch (err) {
-    console.warn('Initialization error:', err);
-  }
-  next();
 });
 
 // Start Server in standalone mode (local dev)

@@ -23,14 +23,17 @@ const memoryStore = {
 
 export const UserStore = {
   async findByEmail(email) {
+    if (!email) return null;
+    const norm = String(email).toLowerCase().trim();
     if (!isFallback()) {
       try {
-        return await UserModel.findOne({ email: email.toLowerCase() });
+        const doc = await UserModel.findOne({ email: norm });
+        if (doc) return doc;
       } catch (e) {
         console.warn('Fallback to memory for findByEmail:', e.message);
       }
     }
-    return memoryStore.users.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
+    return memoryStore.users.find(u => (u.email || '').toLowerCase() === norm) || null;
   },
 
   async findById(id) {
