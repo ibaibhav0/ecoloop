@@ -1,0 +1,19 @@
+usn,name,email,phone,hostel,department,year,status
+4NM22CS045,Baibhav Kumar,baibhav@ecoloop.campus,+919876543210,Nandani,Computer Science & Engineering,3rd Year,ACTIVE
+4NM22CS045,Baibhav Kumar,baibhav.cs22@nmamit.in,+919876543210,Nandani,Computer Science & Engineering,3rd Year,ACTIVE
+4NM22IS023,Ananya Iyer,ananya@ecoloop.campus,+919812345678,Kaveri,Information Science & Engineering,3rd Year,ACTIVE
+4NM22IS023,Ananya Iyer,ananya.is22@nmamit.in,+919812345678,Kaveri,Information Science & Engineering,3rd Year,ACTIVE
+4NM23EC089,Priya Sharma,priya@ecoloop.campus,+919823456789,Shambhavi,Electronics & Communication Engineering,2nd Year,ACTIVE
+4NM23EC089,Priya Sharma,priya.ec23@nmamit.in,+919823456789,Shambhavi,Electronics & Communication Engineering,2nd Year,ACTIVE
+4NM22ME112,Rohit Shetty,rohit@ecoloop.campus,+919834567890,Kumardhara,Mechanical Engineering,3rd Year,ACTIVE
+4NM22ME112,Rohit Shetty,rohit.me22@nmamit.in,+919834567890,Kumardhara,Mechanical Engineering,3rd Year,ACTIVE
+4NM23BT015,Divya Hegde,divya@ecoloop.campus,+919845678901,Saupernikha,Biotechnology,2nd Year,ACTIVE
+4NM23BT015,Divya Hegde,divya.bt23@nmamit.in,+919845678901,Saupernikha,Biotechnology,2nd Year,ACTIVE
+4NM22AI034,Karthik Rao,karthik@ecoloop.campus,+919856789012,Netravati,Artificial Intelligence & Data Science,3rd Year,ACTIVE
+4NM22AI034,Karthik Rao,karthik.ai22@nmamit.in,+919856789012,Netravati,Artificial Intelligence & Data Science,3rd Year,ACTIVE
+4NM23CS140,Sneha Shenoy,sneha@ecoloop.campus,+919867890123,Nandani,Computer Science & Engineering,2nd Year,ACTIVE
+4NM23CS140,Sneha Shenoy,sneha.cs23@nmamit.in,+919867890123,Nandani,Computer Science & Engineering,2nd Year,ACTIVE
+4NM23IS078,Aditya Nayak,aditya@ecoloop.campus,+919878901234,Kaveri,Information Science & Engineering,2nd Year,ACTIVE
+4NM23IS078,Aditya Nayak,aditya.is23@nmamit.in,+919878901234,Kaveri,Information Science & Engineering,2nd Year,ACTIVE
+4NM22EE051,Varun Bhat,varun@ecoloop.campus,+919889012345,Kumardhara,Electrical & Electronics Engineering,3rd Year,ACTIVE
+4NM23CV028,Pooja Kamath,pooja@ecoloop.campus,+919890123456,Saupernikha,Civil Engineering,2nd Year,ACTIVE
