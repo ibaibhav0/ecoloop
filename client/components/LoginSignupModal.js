@@ -18,6 +18,7 @@ const ERP_DEMO_STUDENTS = [
   { name: 'Rohit Shetty', email: 'rohit@ecoloop.campus', hostel: 'Kumardhara', dept: 'Mechanical Eng.' },
   { name: 'Divya Hegde', email: 'divya@ecoloop.campus', hostel: 'Saupernikha', dept: 'Biotechnology' },
   { name: 'Karthik Rao', email: 'karthik@ecoloop.campus', hostel: 'Netravati', dept: 'AI & Data Science' },
+  { name: 'HOD Computer Science', email: 'cse.hod@nmamit.campus', hostel: 'Yourspace', dept: 'Computer Science & Eng.' },
 ];
 
 export default function LoginSignupModal({ isOpen, onClose }) {
@@ -192,7 +193,7 @@ export default function LoginSignupModal({ isOpen, onClose }) {
               <div className="flex items-center justify-between mb-2">
                 <label className="spacex-caption">CAMPUS EMAIL IDENTIFIER</label>
                 <span className="spacex-caption text-[#ffffff]">
-                  @ecoloop.campus / @nitte.edu.in
+                  @nitte.edu.in / @nmamit.campus / @ecoloop.campus
                 </span>
               </div>
               <div className="relative">

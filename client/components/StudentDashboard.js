@@ -10,6 +10,10 @@ import {
   Clock,
   ArrowRight,
   FileText,
+  KeyRound,
+  Award,
+  Gift,
+  Sparkles,
 } from 'lucide-react';
 import { formatLocation } from '@/lib/formatHostel';
 
@@ -29,6 +33,82 @@ export default function StudentDashboard({
   const completedCount = items.filter((i) => i.status === 'verified_recycled').length;
   const collectedCount = items.filter((i) => ['collected', 'handed_over', 'verified_recycled'].includes(i.status)).length;
   const totalKg = items.reduce((acc, curr) => acc + (curr.actualWeight || curr.approxWeight || 0), 0);
+
+  const handlePrintCertificate = (item) => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+    const certId = `CERT-NITTE-${(item._id || item.trackingCode).slice(-6).toUpperCase()}`;
+    const weightKg = item.actualWeight || item.approxWeight || 1.0;
+    const co2Kg = (weightKg * 1.44).toFixed(1);
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>EcoLoop Green Recycling Certificate - ${certId}</title>
+          <style>
+            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 40px; background: #ffffff; color: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+            .cert { border: 8px double #0f172a; padding: 40px; text-align: center; max-width: 650px; background: #fafafa; }
+            h1 { font-size: 24px; text-transform: uppercase; margin: 0 0 4px; letter-spacing: 2px; }
+            h2 { font-size: 14px; color: #059669; margin: 0 0 20px; letter-spacing: 1px; text-transform: uppercase; }
+            .body-text { font-size: 14px; line-height: 1.6; margin: 20px 0; }
+            .name { font-size: 20px; font-weight: bold; border-bottom: 2px solid #0f172a; display: inline-block; padding: 0 20px 4px; margin: 10px 0; }
+            .stats { display: flex; justify-content: space-around; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 15px 0; margin: 25px 0; }
+            .stat-box { text-align: center; }
+            .stat-val { font-size: 18px; font-weight: bold; color: #0f172a; }
+            .stat-lbl { font-size: 10px; color: #64748b; text-transform: uppercase; margin-top: 2px; }
+            .footer { display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px; text-align: left; }
+          </style>
+        </head>
+        <body>
+          <div class="cert">
+            <h1>Nitte Deemed to be University</h1>
+            <h2>Certificate of Verified E-Waste Recycling</h2>
+            <div style="font-size: 10px; font-family: monospace; color: #64748b;">SERIAL REF: ${certId} • STATUTORY CPCB COMPLIANCE</div>
+            
+            <p class="body-text">This official institutional credential is proudly presented to:</p>
+            <div class="name">${item.userName || user?.name || 'Campus Student'}</div>
+            <p style="font-size: 12px; color: #475569;">${item.userBranch || user?.department || 'Computer Science & Engineering'} • Hostel ${item.userHostel || user?.hostel || 'Nandani'}</p>
+
+            <p class="body-text">
+              For actively preventing toxic heavy metal landfill leakage by contributing electronic hardware (<strong>${item.type}</strong>, Tracking: <code>${item.trackingCode}</code>) to the campus closed-loop circular recovery pipeline.
+            </p>
+
+            <div class="stats">
+              <div class="stat-box">
+                <div class="stat-val">${weightKg} KG</div>
+                <div class="stat-lbl">Scale Mass Diverted</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">${co2Kg} KG</div>
+                <div class="stat-lbl">CO2 Emissions Avoided</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-val">+${Math.round(weightKg * 10)} PTS</div>
+                <div class="stat-lbl">Green Merit Credits</div>
+              </div>
+            </div>
+
+            <div class="footer">
+              <div>
+                <strong>ISSUED BY:</strong><br/>
+                EcoLoop Circularity Operations Desk<br/>
+                Nitte Deemed to be University
+              </div>
+              <div style="text-align: right;">
+                <strong>AUTHENTICATION:</strong><br/>
+                CPCB Authorised Recycler Handover<br/>
+                Date: ${new Date().toLocaleDateString('en-GB')}
+              </div>
+            </div>
+          </div>
+          <script>
+            window.onload = function() { window.print(); window.close(); }
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
 
   return (
     <div className="space-y-16">
@@ -161,6 +241,28 @@ export default function StudentDashboard({
         )}
       </section>
 
+      {/* Monthly Rewards Banner: Amazon Gift Cards */}
+      <section className="p-4 bg-[#0a0a0c] border border-amber-400/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 border border-amber-400/80 bg-black flex items-center justify-center shrink-0">
+            <Gift className="w-5 h-5 text-amber-400" />
+          </div>
+          <div>
+            <div className="font-['D-DIN-Bold'] text-sm uppercase text-white tracking-wide">
+              MONTHLY CHAMPIONSHIP: WIN ₹2,500 AMAZON GIFT CARDS &amp; COOL TECH GOODIES
+            </div>
+            <p className="text-[11px] text-[#a1a1aa] font-mono mt-0.5">
+              Hand over your e-waste with your 4-digit OTP. Top student recyclers this month receive Amazon Gift Cards &amp; Hoodies!
+            </p>
+          </div>
+        </div>
+        {onOpenLeaderboard && (
+          <button onClick={onOpenLeaderboard} className="btn-spacex py-1.5 px-3 text-xs shrink-0 whitespace-nowrap">
+            <span>View Standings &amp; Prizes</span>
+          </button>
+        )}
+      </section>
+
       {/* Primary Actions Track */}
       <section className="flex flex-wrap items-center justify-between gap-6 border-b border-[#3a3a3f] pb-8">
         <div>
@@ -223,6 +325,12 @@ export default function StudentDashboard({
                         {item.trackingCode}
                       </div>
                       <div className="text-sm font-semibold text-[#f0f0fa] mt-0.5">{item.type}</div>
+                      {['registered', 'scheduled'].includes(item.status) && (
+                        <div className="mt-1.5 inline-flex items-center gap-1.5 px-2 py-0.5 bg-black border border-white text-white text-[10px] font-mono">
+                          <KeyRound className="w-2.5 h-2.5 text-amber-400" />
+                          <span>HANDOVER OTP: <strong className="text-white font-bold tracking-widest">{item.otp || '7492'}</strong></span>
+                        </div>
+                      )}
                     </td>
 
                     <td>
@@ -259,14 +367,25 @@ export default function StudentDashboard({
                           </button>
                         )}
 
-                        <button
-                          onClick={() => onOpenQr(item)}
-                          className="btn-spacex py-1 px-3 text-[11px]"
-                          title="Passport QR"
-                        >
-                          <QrCode className="w-3 h-3" />
-                          <span>Tag</span>
-                        </button>
+                        {['registered', 'scheduled'].includes(item.status) ? (
+                          <button
+                            onClick={() => onOpenQr(item)}
+                            className="btn-spacex py-1 px-3 text-[11px] border-amber-400 text-white"
+                            title="View Handover OTP"
+                          >
+                            <KeyRound className="w-3 h-3 text-amber-400" />
+                            <span>OTP</span>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handlePrintCertificate(item)}
+                            className="btn-spacex py-1 px-3 text-[11px] border-emerald-400 text-white"
+                            title="Download Certificate"
+                          >
+                            <Award className="w-3 h-3 text-emerald-400" />
+                            <span>Certificate</span>
+                          </button>
+                        )}
 
                         <button
                           onClick={() => onOpenTracker(item._id || item.id)}

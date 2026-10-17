@@ -23,7 +23,7 @@ const getCampusDomains = () => {
   if (envDomains) {
     return envDomains.split(',').map(d => d.trim().toLowerCase().replace(/^@/, ''));
   }
-  return ['ecoloop.campus', 'nitte.edu.in'];
+  return ['ecoloop.campus', 'nitte.edu.in', 'nmamit.campus', 'nmamit.in'];
 };
 
 class CampusErpService {
@@ -140,6 +140,24 @@ class CampusErpService {
         success: false,
         errorType: 'INVALID_DOMAIN',
         message: domainCheck.message,
+      };
+    }
+
+    if (normEmail === 'cse.hod@nmamit.campus' || normEmail === 'cse.hod@nitte.edu.in') {
+      return {
+        success: true,
+        found: true,
+        student: {
+          name: 'HOD Computer Science & Engineering',
+          email: normEmail,
+          usn: 'FAC-CSE-001',
+          hostel: 'Yourspace',
+          department: 'Computer Science & Engineering',
+          year: 'Faculty / Staff',
+          status: 'ACTIVE',
+          verifiedByAdmin: true,
+          source: 'Official Department Directory',
+        },
       };
     }
 

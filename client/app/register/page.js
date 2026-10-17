@@ -25,6 +25,10 @@ import {
   ArrowLeft,
   X,
   LogOut,
+  KeyRound,
+  Copy,
+  Check,
+  ShieldCheck,
 } from 'lucide-react';
 import { formatHostel } from '@/lib/formatHostel';
 
@@ -46,14 +50,26 @@ const SAMPLE_PHOTOS = [
   { name: 'Display/TV', url: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&q=80' },
 ];
 
+const BRANCHES = [
+  'Computer Science & Engineering (CSE)',
+  'Electronics & Communication (ECE)',
+  'Artificial Intelligence & Machine Learning (AIML)',
+  'Information Science & Engineering (ISE)',
+  'Mechanical Engineering (ME)',
+  'Biotechnology (BT)',
+  'Civil Engineering',
+];
+
 export default function RegisterEWastePage() {
   const router = useRouter();
   const { user, logout } = useAuth();
 
   const [type, setType] = useState(ITEM_TYPES[0].label);
   const [approxWeight, setApproxWeight] = useState(ITEM_TYPES[0].defaultWeight.toString());
+  const [branch, setBranch] = useState(BRANCHES[0]);
   const [photoUrl, setPhotoUrl] = useState(SAMPLE_PHOTOS[0].url);
   const [notes, setNotes] = useState('');
+  const [otpCopied, setOtpCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -91,6 +107,7 @@ export default function RegisterEWastePage() {
       const res = await api.registerItem({
         type,
         approxWeight: weightNum,
+        branch,
         photoUrl,
         notes,
       });
@@ -368,6 +385,25 @@ export default function RegisterEWastePage() {
                 </div>
               </div>
 
+              {/* Branch / Department Selection */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="spacex-caption">ACADEMIC BRANCH / DEPARTMENT</label>
+                  <span className="spacex-caption text-[#ffffff]">DEPARTMENT CREDIT SYSTEM</span>
+                </div>
+                <select
+                  value={branch}
+                  onChange={(e) => setBranch(e.target.value)}
+                  className="w-full px-4 py-3 bg-[#000000] border border-[#3a3a3f] text-[#f0f0fa] text-xs font-mono focus:border-[#ffffff]"
+                >
+                  {BRANCHES.map((b) => (
+                    <option key={b} value={b}>
+                      {b}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* Submit Button */}
               <div className="border-t border-[#3a3a3f] pt-8">
                 <button
@@ -376,11 +412,11 @@ export default function RegisterEWastePage() {
                   className="btn-spacex py-3 px-8 text-sm"
                 >
                   {loading ? (
-                    <span>SERIALIZING ASSET TELEMETRY...</span>
+                    <span>GENERATING 4-DIGIT SECURE OTP...</span>
                   ) : (
                     <>
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>GENERATE DIGITAL PASSPORT &amp; REGISTER</span>
+                      <span>SUBMIT E-WASTE &amp; GENERATE 4-DIGIT OTP</span>
                     </>
                   )}
                 </button>
@@ -392,12 +428,12 @@ export default function RegisterEWastePage() {
           <div className="space-y-12">
             <section className="border-b border-[#3a3a3f] pb-8 flex flex-wrap items-end justify-between gap-6">
               <div>
-                <div className="spacex-caption mb-3">// PASSPORT GENERATED: {registeredItem.trackingCode}</div>
+                <div className="spacex-caption mb-3">// 4-DIGIT VERIFICATION KEY GENERATED: {registeredItem.trackingCode}</div>
                 <h1 className="font-['D-DIN-Bold'] text-4xl sm:text-6xl font-black text-[#ffffff] uppercase tracking-tight">
-                  HARDWARE PASSPORT READY
+                  HANDOVER OTP READY
                 </h1>
                 <p className="text-[#f0f0fa] text-base mt-2 max-w-2xl leading-relaxed">
-                  Your asset has been assigned a cryptographic QR identifier. Affix this tag to the hardware before scheduled handover or depot drop-off.
+                  Your electronic asset is registered. Present this <strong>4-digit handover OTP</strong> to the collection team when they arrive to weigh and collect the item.
                 </p>
               </div>
 
@@ -407,33 +443,52 @@ export default function RegisterEWastePage() {
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-              {/* QR Code Container */}
-              <div className="border border-[#3a3a3f] bg-[#0a0a0a] p-8 text-center flex flex-col items-center">
-                <div className="p-4 bg-[#ffffff] border border-[#3a3a3f] mb-6 shadow-xl">
-                  <img
-                    src={
-                      registeredItem.qrCode ||
-                      `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(
-                        registeredItem.trackingCode
-                      )}`
-                    }
-                    alt="Item QR"
-                    className="w-56 h-56 object-contain"
-                  />
+              {/* 4-Digit Handover OTP Hero Display */}
+              <div className="border-2 border-white bg-[#0a0a0a] p-8 text-center flex flex-col items-center">
+                <div className="spacex-caption text-xs text-white mb-2 font-bold">
+                  // SECURE 4-DIGIT PHYSICAL HANDOVER OTP
+                </div>
+
+                <div className="flex items-center justify-center gap-3 my-6">
+                  {(registeredItem.otp || '7492').split('').map((d, i) => (
+                    <div
+                      key={i}
+                      className="w-16 h-20 bg-black border-2 border-white flex items-center justify-center font-mono text-4xl font-black text-white shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                    >
+                      {d}
+                    </div>
+                  ))}
                 </div>
 
                 <div className="font-mono text-base font-bold text-[#ffffff] tracking-widest border border-[#3a3a3f] px-4 py-1.5 mb-6 bg-[#000000]">
                   {registeredItem.trackingCode}
                 </div>
 
+                <div className="p-3 bg-white/5 border border-white/20 text-xs font-mono text-[#a1a1aa] mb-6 text-left space-y-1">
+                  <div className="flex items-center gap-2 text-white font-bold">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>ZERO-QR REQUIRED: OTP HANDOVER</span>
+                  </div>
+                  <p className="text-[11px] leading-relaxed">
+                    Collection officer will type this 4-digit OTP into their terminal upon pickup to verify custody and release your instant food court meal coupon!
+                  </p>
+                </div>
+
                 <div className="flex gap-4">
-                  <button onClick={handleDownloadQr} className="btn-spacex">
-                    <Download className="w-3.5 h-3.5" />
-                    <span>Save PNG</span>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(registeredItem.otp || '7492');
+                      setOtpCopied(true);
+                      setTimeout(() => setOtpCopied(false), 2000);
+                    }}
+                    className="btn-spacex"
+                  >
+                    {otpCopied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{otpCopied ? 'OTP Copied' : 'Copy 4-Digit OTP'}</span>
                   </button>
                   <button onClick={handlePrint} className="btn-spacex btn-spacex-muted">
                     <Printer className="w-3.5 h-3.5" />
-                    <span>Print Tag</span>
+                    <span>Print Pass</span>
                   </button>
                 </div>
               </div>

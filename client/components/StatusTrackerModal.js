@@ -15,11 +15,13 @@ import {
   ArrowRight,
   Utensils,
   Gift,
+  KeyRound,
+  Award,
 } from 'lucide-react';
 import { formatHostel, formatLocation } from '@/lib/formatHostel';
 
 const STAGES = [
-  { key: 'registered', label: 'Registered', desc: 'Item logged & QR generated', icon: QrCode },
+  { key: 'registered', label: 'Registered', desc: 'Item logged & 4-digit OTP generated', icon: KeyRound },
   { key: 'scheduled', label: 'Scheduled', desc: 'Pickup time & location confirmed', icon: Calendar },
   { key: 'collected', label: 'Collected', desc: 'Weighed & reward points awarded', icon: Truck },
   { key: 'handed_over', label: 'Handed Over', desc: 'Transferred to authorised recycler', icon: Building },
@@ -158,16 +160,45 @@ export default function StatusTrackerModal({ itemId, isOpen, onClose, onViewQr }
               </div>
 
               <div className="p-4 bg-[#000000] border border-[#3a3a3f] flex flex-col justify-between">
-                <p className="spacex-caption">DIGITAL PASSPORT</p>
+                <p className="spacex-caption">HANDOVER PASS</p>
                 <button
                   onClick={() => onViewQr && onViewQr(item)}
-                  className="btn-spacex py-1.5 px-3 text-[11px] mt-2"
+                  className="btn-spacex py-1.5 px-3 text-[11px] mt-2 border-amber-400"
                 >
-                  <QrCode className="w-3.5 h-3.5" />
-                  <span>VIEW TAG</span>
+                  <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+                  <span>VIEW OTP</span>
                 </button>
               </div>
             </div>
+
+            {/* 4-Digit Handover OTP Telemetry Banner */}
+            {['registered', 'scheduled'].includes(item.status) ? (
+              <div className="p-4 bg-[#000000] border-2 border-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <div className="spacex-caption text-xs text-white font-bold">// SECURE HANDOVER PROTOCOL</div>
+                  <p className="text-xs text-[#a1a1aa] font-mono mt-1">
+                    Present this 4-digit verification code to the collection team during physical pickup:
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  {(item.otp || '7492').split('').map((d, idx) => (
+                    <div key={idx} className="w-10 h-12 bg-black border-2 border-white text-white font-mono text-xl font-bold flex items-center justify-center">
+                      {d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="p-3 bg-[#0a0a0c] border border-emerald-500/50 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>HANDOVER VERIFIED VIA 4-DIGIT SECURITY OTP</span>
+                </div>
+                <span className="text-[10px] font-mono text-[#a1a1aa] uppercase">
+                  CUSTODY SECURE
+                </span>
+              </div>
+            )}
 
             {/* Quality & Food Coupon Card */}
             {item.foodCoupon && (

@@ -15,6 +15,7 @@ import {
   Clock,
   Calendar,
   FileText,
+  KeyRound,
 } from 'lucide-react';
 import { formatHostel, formatLocation } from '@/lib/formatHostel';
 
@@ -194,10 +195,10 @@ export default function RequestsTable({
                       {['registered', 'scheduled'].includes(item.status) && (
                         <button
                           onClick={() => onOpenCollect(item)}
-                          className="btn-spacex py-1 px-3 text-[11px]"
+                          className="btn-spacex py-1 px-3 text-[11px] border-white text-white"
                         >
-                          <Scale className="w-3 h-3" />
-                          <span>Weigh</span>
+                          <KeyRound className="w-3 h-3 text-amber-400" />
+                          <span>Verify OTP &amp; Weigh</span>
                         </button>
                       )}
 
@@ -224,9 +225,9 @@ export default function RequestsTable({
                       <button
                         onClick={() => onOpenQr(item)}
                         className="btn-spacex py-1 px-2.5 text-[11px]"
-                        title="QR Sticker"
+                        title="View Handover OTP"
                       >
-                        <QrCode className="w-3 h-3" />
+                        <KeyRound className="w-3 h-3" />
                       </button>
 
                       <button

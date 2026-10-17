@@ -142,6 +142,54 @@ export const getLeaderboard = async (req, res) => {
       }))
       .sort((a, b) => b.totalPoints - a.totalPoints || b.totalKg - a.totalKg);
 
+    // Aggregate by Branch / Department
+    const defaultBranches = [
+      'Computer Science & Engineering (CSE)',
+      'Electronics & Communication (ECE)',
+      'Artificial Intelligence & Machine Learning (AIML)',
+      'Information Science & Engineering (ISE)',
+      'Mechanical Engineering (ME)',
+      'Biotechnology (BT)',
+      'Civil Engineering',
+    ];
+
+    const branchMap = {};
+    defaultBranches.forEach(b => {
+      branchMap[b] = {
+        branch: b,
+        totalPoints: 0,
+        totalKg: 0,
+        itemsCount: 0,
+        studentCount: 0,
+      };
+    });
+
+    students.forEach(s => {
+      const b = s.department || 'Computer Science & Engineering (CSE)';
+      if (!branchMap[b]) {
+        branchMap[b] = { branch: b, totalPoints: 0, totalKg: 0, itemsCount: 0, studentCount: 0 };
+      }
+      branchMap[b].totalPoints += s.points || 0;
+      branchMap[b].studentCount += 1;
+    });
+
+    items.forEach(item => {
+      const b = item.userBranch || 'Computer Science & Engineering (CSE)';
+      if (!branchMap[b]) {
+        branchMap[b] = { branch: b, totalPoints: 0, totalKg: 0, itemsCount: 0, studentCount: 0 };
+      }
+      branchMap[b].itemsCount += 1;
+      const weight = item.actualWeight || item.approxWeight || 0;
+      branchMap[b].totalKg += weight;
+    });
+
+    const branchRankings = Object.values(branchMap)
+      .map(b => ({
+        ...b,
+        totalKg: Number(b.totalKg.toFixed(1)),
+      }))
+      .sort((a, b) => b.totalPoints - a.totalPoints || b.totalKg - a.totalKg);
+
     // Top students: only students who have actually recycled and earned reward points
     const topStudents = students
       .filter(s => (s.points || 0) > 0)
@@ -151,12 +199,14 @@ export const getLeaderboard = async (req, res) => {
         id: s._id,
         name: s.name,
         hostel: s.hostel,
+        department: s.department,
         points: s.points || 0,
       }));
 
     return res.status(200).json({
       success: true,
       hostelRankings,
+      branchRankings,
       topStudents,
     });
   } catch (error) {

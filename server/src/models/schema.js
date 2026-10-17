@@ -88,6 +88,8 @@ const eWasteItemSchema = new mongoose.Schema(
     pickupDate: { type: String, default: '' },
     location: { type: String, default: '' },
     notes: { type: String, default: '' },
+    otp: { type: String, default: '' },
+    userBranch: { type: String, default: 'Computer Science & Engineering (CSE)', trim: true },
     conditionQuality: {
       type: String,
       default: 'Grade B - Good / Repairable',

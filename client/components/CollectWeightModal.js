@@ -13,6 +13,7 @@ export default function CollectWeightModal({ item, isOpen, onClose, onSuccess })
   const [location, setLocation] = useState(item?.location || 'Central Campus E-Waste Depot');
   const [notes, setNotes] = useState('Weighed and verified by collection team on campus scale');
   const [issuedCoupon, setIssuedCoupon] = useState(null);
+  const [enteredOtp, setEnteredOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -51,6 +52,12 @@ export default function CollectWeightModal({ item, isOpen, onClose, onSuccess })
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (item.otp && !enteredOtp.trim()) {
+      setError('Please enter the 4-digit handover OTP provided by the submitter.');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -59,6 +66,7 @@ export default function CollectWeightModal({ item, isOpen, onClose, onSuccess })
         conditionQuality,
         location,
         notes,
+        otp: enteredOtp.trim(),
       });
 
       if (res.success) {
@@ -224,6 +232,30 @@ export default function CollectWeightModal({ item, isOpen, onClose, onSuccess })
               </div>
             </div>
 
+            {/* 4-Digit Handover OTP Input */}
+            <div className="bg-[#000000] p-4 border-2 border-[#ffffff] space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="spacex-caption text-[#ffffff] font-bold">
+                  // ENTER 4-DIGIT SUBMITTER HANDOVER OTP
+                </label>
+                <span className="text-[10px] font-mono uppercase bg-white text-black font-bold px-1.5 py-0.5">
+                  SECURITY KEY
+                </span>
+              </div>
+              <input
+                type="text"
+                required
+                maxLength={4}
+                value={enteredOtp}
+                onChange={(e) => setEnteredOtp(e.target.value.replace(/\D/g, ''))}
+                placeholder="ENTER 4-DIGIT OTP (e.g. 7492)"
+                className="w-full px-4 py-2.5 bg-[#0a0a0c] border border-[#ffffff] text-center font-mono text-xl tracking-[0.4em] font-black text-white focus:outline-none"
+              />
+              <p className="text-[10px] text-[#a1a1aa] font-mono">
+                Ask submitter ({item.userName}) for their 4-digit verification code. This ensures secure physical custody transfer without QR scanning.
+              </p>
+            </div>
+
             {/* Actual Weight Input */}
             <div>
               <label className="block spacex-caption mb-2">
@@ -285,15 +317,15 @@ export default function CollectWeightModal({ item, isOpen, onClose, onSuccess })
             <div className="pt-2 border-t border-[#3a3a3f]">
               <button
                 type="submit"
-                disabled={loading || weightNum <= 0}
+                disabled={loading || weightNum <= 0 || (item.otp && enteredOtp.length < 4)}
                 className="w-full btn-spacex py-3 flex items-center justify-center gap-2"
               >
                 {loading ? (
-                  <span>RECORDING INGESTION &amp; ISSUING COUPON...</span>
+                  <span>VERIFYING OTP &amp; RECORDING INGESTION...</span>
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>VERIFY MASS &amp; ISSUE FOOD COUPON</span>
+                    <span>VERIFY 4-DIGIT OTP &amp; COLLECT HARDWARE</span>
                   </>
                 )}
               </button>

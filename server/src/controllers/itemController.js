@@ -66,18 +66,24 @@ export const registerItem = async (req, res) => {
     const uniqueSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
     const trackingCode = `ECO-${new Date().getFullYear()}-${uniqueSuffix}`;
 
-    // Payload embedded in QR code
+    // Generate secure 4-digit handover OTP
+    const otp = Math.floor(1000 + Math.random() * 9000).toString();
+    const userBranch = req.body.branch || req.body.department || req.user.department || 'Computer Science & Engineering (CSE)';
+
+    // Payload embedded in digital tag
     const qrPayload = JSON.stringify({
       trackingCode,
+      otp,
       type,
       productName: productName || type,
       customerType: determinedCustomerType,
       approxWeight: weightNum,
       registeredBy: userName,
       hostel: userHostel,
+      branch: userBranch,
     });
 
-    // Generate QR Code data URL
+    // Generate QR Code data URL (kept for optional digital badge)
     const qrCodeDataUrl = await QRCode.toDataURL(qrPayload, {
       errorCorrectionLevel: 'M',
       margin: 2,
@@ -90,6 +96,8 @@ export const registerItem = async (req, res) => {
 
     const newItem = await ItemStore.create({
       trackingCode,
+      otp,
+      userBranch,
       userId: req.user._id || req.user.id,
       userName,
       userEmail,
@@ -391,7 +399,7 @@ function generateFoodCoupon(quality) {
 export const collectItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const { actualWeight, location = '', notes = '', conditionQuality = 'Grade B - Good / Repairable' } = req.body;
+    const { actualWeight, location = '', notes = '', conditionQuality = 'Grade B - Good / Repairable', otp } = req.body;
 
     const weightNum = parseFloat(actualWeight);
     if (isNaN(weightNum) || weightNum <= 0) {
@@ -401,6 +409,18 @@ export const collectItem = async (req, res) => {
     const item = await ItemStore.findById(id);
     if (!item) {
       return res.status(404).json({ success: false, message: 'Item not found' });
+    }
+
+    // Verify 4-digit Handover OTP if item has an OTP assigned
+    if (item.otp && item.otp.trim().length > 0) {
+      const cleanEnteredOtp = String(otp || '').trim();
+      const cleanExpectedOtp = String(item.otp).trim();
+      if (!cleanEnteredOtp || cleanEnteredOtp !== cleanExpectedOtp) {
+        return res.status(400).json({
+          success: false,
+          message: `Invalid 4-digit Handover OTP. Please ask the submitter (${item.userName}) for their correct 4-digit security code.`,
+        });
+      }
     }
 
     // Calculate reward points: 10 points per kg collected!

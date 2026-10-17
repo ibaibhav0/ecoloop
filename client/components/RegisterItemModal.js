@@ -36,9 +36,20 @@ const SAMPLE_PHOTOS = [
   { name: 'Display/TV', url: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&q=80' },
 ];
 
+const BRANCHES = [
+  'Computer Science & Engineering (CSE)',
+  'Electronics & Communication (ECE)',
+  'Artificial Intelligence & Machine Learning (AIML)',
+  'Information Science & Engineering (ISE)',
+  'Mechanical Engineering (ME)',
+  'Biotechnology (BT)',
+  'Civil Engineering',
+];
+
 export default function RegisterItemModal({ isOpen, onClose, onSuccess, initialItem = null }) {
   const [type, setType] = useState(ITEM_TYPES[0].label);
   const [approxWeight, setApproxWeight] = useState(ITEM_TYPES[0].defaultWeight.toString());
+  const [branch, setBranch] = useState(BRANCHES[0]);
   const [photoUrl, setPhotoUrl] = useState(SAMPLE_PHOTOS[0].url);
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
@@ -86,6 +97,7 @@ export default function RegisterItemModal({ isOpen, onClose, onSuccess, initialI
         productName: initialItem?.name || type,
         customerType: initialItem?.customerType || 'student',
         approxWeight: parseFloat(approxWeight),
+        branch,
         photoUrl,
         notes,
       });
@@ -241,6 +253,25 @@ export default function RegisterItemModal({ isOpen, onClose, onSuccess, initialI
             </div>
           </div>
 
+          {/* Academic Branch / Department */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="spacex-caption">ACADEMIC BRANCH / DEPARTMENT</label>
+              <span className="spacex-caption text-[#ffffff]">BRANCH SCOREBOARD</span>
+            </div>
+            <select
+              value={branch}
+              onChange={(e) => setBranch(e.target.value)}
+              className="w-full px-4 py-3 bg-[#000000] border border-[#3a3a3f] text-[#f0f0fa] text-xs font-mono focus:border-[#ffffff]"
+            >
+              {BRANCHES.map((b) => (
+                <option key={b} value={b}>
+                  {b}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Notes / Condition */}
           <div>
             <label className="block spacex-caption mb-2">SUBSYSTEM CONDITION &amp; NOTES (OPTIONAL)</label>
@@ -260,11 +291,11 @@ export default function RegisterItemModal({ isOpen, onClose, onSuccess, initialI
               className="w-full btn-spacex py-3"
             >
               {loading ? (
-                <span>INITIALIZING DIGITAL PASSPORT...</span>
+                <span>INITIALIZING 4-DIGIT HANDOVER OTP...</span>
               ) : (
                 <>
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>GENERATE QR PASSPORT &amp; REGISTER</span>
+                  <span>SUBMIT E-WASTE &amp; GENERATE 4-DIGIT OTP</span>
                 </>
               )}
             </button>
