@@ -16,8 +16,10 @@ import {
   Calendar,
   FileText,
   KeyRound,
+  Award,
 } from 'lucide-react';
 import { formatHostel, formatLocation } from '@/lib/formatHostel';
+import CertificateModal from '@/components/CertificateModal';
 
 const STATUS_FILTERS = [
   { key: 'all', label: 'All Items' },
@@ -44,6 +46,8 @@ export default function RequestsTable({
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [hostelFilter, setHostelFilter] = useState('all');
+  const [selectedCertItem, setSelectedCertItem] = useState(null);
+  const [isCertOpen, setIsCertOpen] = useState(false);
 
   const filteredItems = items.filter((item) => {
     if (statusFilter !== 'all' && item.status !== statusFilter) return false;
@@ -230,6 +234,20 @@ export default function RequestsTable({
                         <KeyRound className="w-3 h-3" />
                       </button>
 
+                      {['collected', 'handed_over', 'verified_recycled'].includes(item.status) && (
+                        <button
+                          onClick={() => {
+                            setSelectedCertItem(item);
+                            setIsCertOpen(true);
+                          }}
+                          className="btn-spacex py-1 px-2.5 text-[11px] border-emerald-400 text-emerald-300 hover:bg-emerald-500/20"
+                          title="View Official Certificate"
+                        >
+                          <Award className="w-3 h-3 text-emerald-400" />
+                          <span className="hidden sm:inline">Cert</span>
+                        </button>
+                      )}
+
                       <button
                         onClick={() => onOpenTracker(item._id || item.id)}
                         className="btn-spacex py-1 px-2.5 text-[11px]"
@@ -245,6 +263,13 @@ export default function RequestsTable({
           </tbody>
         </table>
       </div>
+
+      {/* Interactive Official Certificate Modal */}
+      <CertificateModal
+        item={selectedCertItem}
+        isOpen={isCertOpen}
+        onClose={() => setIsCertOpen(false)}
+      />
     </div>
   );
 }

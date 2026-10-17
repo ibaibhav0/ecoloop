@@ -1,6 +1,4 @@
-'use client';
-
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import {
@@ -16,6 +14,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { formatLocation } from '@/lib/formatHostel';
+import CertificateModal from '@/components/CertificateModal';
 
 export default function StudentDashboard({
   items = [],
@@ -27,6 +26,8 @@ export default function StudentDashboard({
   onOpenLeaderboard,
 }) {
   const { user } = useAuth();
+  const [selectedCertItem, setSelectedCertItem] = useState(null);
+  const [isCertModalOpen, setIsCertModalOpen] = useState(false);
 
   const totalRegistered = items.length;
   const scheduledCount = items.filter((i) => i.status === 'scheduled').length;
@@ -35,79 +36,8 @@ export default function StudentDashboard({
   const totalKg = items.reduce((acc, curr) => acc + (curr.actualWeight || curr.approxWeight || 0), 0);
 
   const handlePrintCertificate = (item) => {
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) return;
-    const certId = `CERT-NITTE-${(item._id || item.trackingCode).slice(-6).toUpperCase()}`;
-    const weightKg = item.actualWeight || item.approxWeight || 1.0;
-    const co2Kg = (weightKg * 1.44).toFixed(1);
-
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>EcoLoop Green Recycling Certificate - ${certId}</title>
-          <style>
-            body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 40px; background: #ffffff; color: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-            .cert { border: 8px double #0f172a; padding: 40px; text-align: center; max-width: 650px; background: #fafafa; }
-            h1 { font-size: 24px; text-transform: uppercase; margin: 0 0 4px; letter-spacing: 2px; }
-            h2 { font-size: 14px; color: #059669; margin: 0 0 20px; letter-spacing: 1px; text-transform: uppercase; }
-            .body-text { font-size: 14px; line-height: 1.6; margin: 20px 0; }
-            .name { font-size: 20px; font-weight: bold; border-bottom: 2px solid #0f172a; display: inline-block; padding: 0 20px 4px; margin: 10px 0; }
-            .stats { display: flex; justify-content: space-around; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 15px 0; margin: 25px 0; }
-            .stat-box { text-align: center; }
-            .stat-val { font-size: 18px; font-weight: bold; color: #0f172a; }
-            .stat-lbl { font-size: 10px; color: #64748b; text-transform: uppercase; margin-top: 2px; }
-            .footer { display: flex; justify-content: space-between; margin-top: 30px; font-size: 11px; text-align: left; }
-          </style>
-        </head>
-        <body>
-          <div class="cert">
-            <h1>Nitte Deemed to be University</h1>
-            <h2>Certificate of Verified E-Waste Recycling</h2>
-            <div style="font-size: 10px; font-family: monospace; color: #64748b;">SERIAL REF: ${certId} • STATUTORY CPCB COMPLIANCE</div>
-            
-            <p class="body-text">This official institutional credential is proudly presented to:</p>
-            <div class="name">${item.userName || user?.name || 'Campus Student'}</div>
-            <p style="font-size: 12px; color: #475569;">${item.userBranch || user?.department || 'Computer Science & Engineering'} • Hostel ${item.userHostel || user?.hostel || 'Nandani'}</p>
-
-            <p class="body-text">
-              For actively preventing toxic heavy metal landfill leakage by contributing electronic hardware (<strong>${item.type}</strong>, Tracking: <code>${item.trackingCode}</code>) to the campus closed-loop circular recovery pipeline.
-            </p>
-
-            <div class="stats">
-              <div class="stat-box">
-                <div class="stat-val">${weightKg} KG</div>
-                <div class="stat-lbl">Scale Mass Diverted</div>
-              </div>
-              <div class="stat-box">
-                <div class="stat-val">${co2Kg} KG</div>
-                <div class="stat-lbl">CO2 Emissions Avoided</div>
-              </div>
-              <div class="stat-box">
-                <div class="stat-val">+${Math.round(weightKg * 10)} PTS</div>
-                <div class="stat-lbl">Green Merit Credits</div>
-              </div>
-            </div>
-
-            <div class="footer">
-              <div>
-                <strong>ISSUED BY:</strong><br/>
-                EcoLoop Circularity Operations Desk<br/>
-                Nitte Deemed to be University
-              </div>
-              <div style="text-align: right;">
-                <strong>AUTHENTICATION:</strong><br/>
-                CPCB Authorised Recycler Handover<br/>
-                Date: ${new Date().toLocaleDateString('en-GB')}
-              </div>
-            </div>
-          </div>
-          <script>
-            window.onload = function() { window.print(); window.close(); }
-          </script>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
+    setSelectedCertItem(item);
+    setIsCertModalOpen(true);
   };
 
   return (
@@ -237,6 +167,74 @@ export default function StudentDashboard({
                   </div>
                 );
               })}
+          </div>
+        )}
+      </section>
+
+      {/* Official Recycling Certificates Showcase */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-[#3a3a3f] pb-3">
+          <div className="flex items-center gap-2">
+            <Award className="w-5 h-5 text-emerald-400" />
+            <h2 className="font-['D-DIN-Bold'] text-xl uppercase tracking-wider text-white">
+              MY OFFICIAL GREEN RECYCLING CERTIFICATES ({items.filter((i) => ['collected', 'handed_over', 'verified_recycled'].includes(i.status)).length})
+            </h2>
+          </div>
+          <span className="spacex-caption text-emerald-400">// STATUTORY CPCB / NAAC VERIFIED</span>
+        </div>
+
+        {items.filter((i) => ['collected', 'handed_over', 'verified_recycled'].includes(i.status)).length === 0 ? (
+          <div className="border border-dashed border-[#3a3a3f] p-8 text-center bg-[#0a0a0c] space-y-2">
+            <Award className="w-8 h-8 text-[#5a5a5f] mx-auto" />
+            <div className="font-['D-DIN-Bold'] text-sm uppercase text-[#a1a1aa]">
+              NO COLLECTED ITEMS YET
+            </div>
+            <p className="text-xs text-[#71717a] max-w-md mx-auto">
+              Once the collection squad verifies your 4-digit OTP and weighs your e-waste, your official CPCB-compliant Green Recycling Certificate will be immediately available here to view, print, and download.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {items
+              .filter((i) => ['collected', 'handed_over', 'verified_recycled'].includes(i.status))
+              .map((item) => (
+                <div
+                  key={item._id || item.trackingCode}
+                  className="border-2 border-emerald-500/60 bg-[#001408] p-5 space-y-4 flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2 py-0.5 bg-emerald-500 text-black font-mono text-[10px] font-bold uppercase tracking-wider">
+                        {item.status === 'verified_recycled' ? '✓ FULLY RECYCLED' : '✓ CUSTODY VERIFIED'}
+                      </span>
+                      <span className="font-mono text-xs text-emerald-400 font-bold">
+                        {item.actualWeight || item.approxWeight} KG
+                      </span>
+                    </div>
+
+                    <h3 className="font-['D-DIN-Bold'] text-base text-white uppercase mt-1">
+                      {item.type}
+                    </h3>
+                    <p className="font-mono text-[11px] text-[#a1a1aa]">
+                      REF: {item.trackingCode} • {item.userBranch || 'CSE Dept'}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-emerald-950 flex items-center justify-between">
+                    <span className="text-[10px] text-emerald-400/80 font-mono">
+                      +{(parseFloat(item.actualWeight || item.approxWeight || 1) * 10).toFixed(0)} Green PTS
+                    </span>
+
+                    <button
+                      onClick={() => handlePrintCertificate(item)}
+                      className="btn-spacex py-1.5 px-3 text-xs bg-emerald-500 text-black hover:bg-emerald-400 font-bold flex items-center gap-1.5"
+                    >
+                      <Award className="w-3.5 h-3.5" />
+                      <span>Download Certificate</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
           </div>
         )}
       </section>
@@ -404,6 +402,13 @@ export default function StudentDashboard({
           </div>
         )}
       </section>
+
+      {/* Interactive Official Certificate Modal */}
+      <CertificateModal
+        item={selectedCertItem}
+        isOpen={isCertModalOpen}
+        onClose={() => setIsCertModalOpen(false)}
+      />
     </div>
   );
 }

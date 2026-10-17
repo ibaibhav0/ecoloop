@@ -105,6 +105,14 @@ const eWasteItemSchema = new mongoose.Schema(
       status: { type: String, default: 'available' },
       issuedAt: { type: Date, default: null },
     },
+    recyclingCertificate: {
+      certificateId: { type: String, default: '' },
+      facility: { type: String, default: '' },
+      issuedAt: { type: Date, default: null },
+      cpcbRegNumber: { type: String, default: 'CPCB/EPR-RECYCLE/KA-2026/0891' },
+      verifiedBy: { type: String, default: '' },
+      notes: { type: String, default: '' },
+    },
   },
   { timestamps: true }
 );

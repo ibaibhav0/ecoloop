@@ -19,6 +19,7 @@ import {
   Award,
 } from 'lucide-react';
 import { formatHostel, formatLocation } from '@/lib/formatHostel';
+import CertificateModal from '@/components/CertificateModal';
 
 const STAGES = [
   { key: 'registered', label: 'Registered', desc: 'Item logged & 4-digit OTP generated', icon: KeyRound },
@@ -31,6 +32,7 @@ const STAGES = [
 export default function StatusTrackerModal({ itemId, isOpen, onClose, onViewQr }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isCertOpen, setIsCertOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen && itemId) {
@@ -200,6 +202,33 @@ export default function StatusTrackerModal({ itemId, isOpen, onClose, onViewQr }
               </div>
             )}
 
+            {/* Official Recycling Certificate Card */}
+            {['collected', 'handed_over', 'verified_recycled'].includes(item.status) && (
+              <div className="p-4 bg-[#001408] border-2 border-emerald-500 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 border border-emerald-400 bg-black flex items-center justify-center shrink-0 text-emerald-400">
+                    <Award className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="font-['D-DIN-Bold'] text-sm uppercase text-white tracking-wide">
+                      OFFICIAL CPCB GREEN RECYCLING CERTIFICATE
+                    </div>
+                    <p className="text-[11px] text-[#a1a1aa] font-mono mt-0.5">
+                      Statutory de-pollution &amp; circular recovery credential issued for {item.trackingCode}.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setIsCertOpen(true)}
+                  className="btn-spacex py-2 px-4 text-xs bg-emerald-500 text-black hover:bg-emerald-400 font-bold shrink-0 flex items-center gap-1.5"
+                >
+                  <Award className="w-3.5 h-3.5" />
+                  <span>Download Certificate</span>
+                </button>
+              </div>
+            )}
+
             {/* Quality & Food Coupon Card */}
             {item.foodCoupon && (
               <div className="p-4 bg-[#0a0a0c] border-2 border-[#ffffff] text-xs relative overflow-hidden">
@@ -315,6 +344,13 @@ export default function StatusTrackerModal({ itemId, isOpen, onClose, onViewQr }
           </div>
         )}
       </div>
+
+      {/* Interactive Official Certificate Modal */}
+      <CertificateModal
+        item={item}
+        isOpen={isCertOpen}
+        onClose={() => setIsCertOpen(false)}
+      />
     </div>
   );
 }

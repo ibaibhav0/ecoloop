@@ -546,9 +546,22 @@ export const recycleItem = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Item not found' });
     }
 
+    const cleanCode = item.trackingCode.replace('ECO-2026-', '');
+    const certId = `CERT-CPCB-${cleanCode}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const certData = {
+      certificateId: certId,
+      facility,
+      issuedAt: new Date(),
+      cpcbRegNumber: 'CPCB/EPR-RECYCLE/KA-2026/0891',
+      verifiedBy: req.user.name,
+      notes,
+    };
+
     const updatedItem = await ItemStore.updateById(item._id, {
       status: 'verified_recycled',
       location: facility,
+      recyclingCertificate: certData,
     });
 
     await HandoverStore.create({
@@ -560,7 +573,7 @@ export const recycleItem = async (req, res) => {
       actorName: req.user.name,
       actorId: (req.user._id || req.user.id).toString(),
       verified: true,
-      notes: `Certified recycled at ${facility}. Safe dismantling & material recovery completed. ${notes ? `(${notes})` : ''}`,
+      notes: `Certified recycled at ${facility}. Safe dismantling & material recovery completed. CPCB Certificate: ${certId}. ${notes ? `(${notes})` : ''}`,
     });
 
     const handovers = await HandoverStore.findByItemId(item._id);
@@ -575,8 +588,9 @@ export const recycleItem = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: 'Item verified as recycled successfully!',
+      message: 'Item verified as recycled successfully! CPCB Green Certificate issued.',
       item: updatedItem,
+      certificate: certData,
       handovers,
     });
   } catch (error) {

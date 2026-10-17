@@ -17,8 +17,13 @@ import {
   ArrowLeft,
   ArrowRight,
   LogOut,
+  Award,
+  Printer,
+  FileText,
+  ShieldCheck,
 } from 'lucide-react';
 import { formatHostel } from '@/lib/formatHostel';
+import CertificateModal from '@/components/CertificateModal';
 
 const FACILITIES = [
   'Janavi Bairoliya - Netravati Material Recovery Plant',
@@ -38,6 +43,9 @@ export default function RecyclerPage() {
   const [availableItems, setAvailableItems] = useState([]);
 
   const [scannedItem, setScannedItem] = useState(null);
+  const [selectedCertItem, setSelectedCertItem] = useState(null);
+  const [isCertModalOpen, setIsCertModalOpen] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState('inbound');
 
   const [facility, setFacility] = useState(FACILITIES[0]);
   const [notes, setNotes] = useState('Certified safe green dismantling completed. Hazardous materials isolated, precious metals extracted.');
@@ -47,7 +55,7 @@ export default function RecyclerPage() {
 
   const html5QrCodeRef = useRef(null);
 
-  useEffect(() => {
+  const fetchItems = () => {
     api
       .getItems()
       .then((res) => {
@@ -56,6 +64,10 @@ export default function RecyclerPage() {
         }
       })
       .catch((e) => console.warn('Could not fetch items:', e));
+  };
+
+  useEffect(() => {
+    fetchItems();
   }, []);
 
   useEffect(() => {
@@ -65,7 +77,6 @@ export default function RecyclerPage() {
       const startScanner = async () => {
         try {
           const { Html5Qrcode } = await import('html5-qrcode');
-
           const targetEl = document.getElementById('recycler-camera-viewport');
           if (!targetEl) return;
 
@@ -96,47 +107,38 @@ export default function RecyclerPage() {
           );
         } catch (err) {
           if (isMounted) {
-            console.warn('html5-qrcode camera notice:', err);
-            setCameraError(
-              'OPTICAL CAMERA UNAVAILABLE. PLEASE INPUT TRACKING CODE MANUALLY.'
-            );
-            setActiveMode('manual');
+            setCameraError('Camera optical feed unattached. Use serialized code input.');
+            setIsScanning(false);
           }
         }
       };
 
-      startScanner();
-    }
-
-    return () => {
-      isMounted = false;
-      if (html5QrCodeRef.current) {
-        try {
+      const timer = setTimeout(startScanner, 200);
+      return () => {
+        isMounted = false;
+        clearTimeout(timer);
+        if (html5QrCodeRef.current) {
           html5QrCodeRef.current.stop().catch(() => {});
-        } catch (e) {}
-      }
-    };
+        }
+      };
+    }
   }, [activeMode, scannedItem]);
 
-  const stopCamera = async () => {
+  const handleScannedData = async (code) => {
     if (html5QrCodeRef.current && isScanning) {
       try {
         await html5QrCodeRef.current.stop();
-        setIsScanning(false);
       } catch (e) {}
+      setIsScanning(false);
     }
-  };
 
-  const handleScannedData = async (codeText) => {
-    await stopCamera();
     setLookupLoading(true);
     setError('');
 
     try {
-      const res = await api.scanLookup(codeText);
+      const res = await api.scanLookup(code);
       if (res.success && res.item) {
         setScannedItem(res.item);
-        setSubmitSuccess(false);
       } else {
         setError(res.message || 'SCANNED TELEMETRY CODE DOES NOT MATCH ANY ENROLLED ASSET.');
       }
@@ -187,7 +189,9 @@ export default function RecyclerPage() {
 
       if (res.success && res.item) {
         setScannedItem(res.item);
+        setSelectedCertItem(res.item);
         setSubmitSuccess(true);
+        fetchItems();
       } else {
         setError(res.message || 'FAILED TO UPDATE RECYCLING VERIFICATION');
       }
@@ -207,6 +211,10 @@ export default function RecyclerPage() {
 
   const itemsAwaitingRecycling = availableItems.filter(
     (i) => i.status === 'handed_over' || i.status === 'collected'
+  );
+
+  const certifiedRecycledItems = availableItems.filter(
+    (i) => i.status === 'verified_recycled'
   );
 
   return (
@@ -251,7 +259,7 @@ export default function RecyclerPage() {
             RECYCLER RECOVERY CONSOLE
           </h1>
           <p className="text-base text-[#f0f0fa] max-w-2xl leading-relaxed">
-            Scan arriving campus consignments, record material extraction parameters, and issue verifiable CPCB recycling certificates.
+            Scan arriving campus consignments, record material extraction parameters, and issue verifiable CPCB recycling certificates with instant PDF downloads.
           </p>
         </div>
       </section>
@@ -326,7 +334,7 @@ export default function RecyclerPage() {
                         type="text"
                         value={manualCode}
                         onChange={(e) => setManualCode(e.target.value)}
-                        placeholder="ECO-2026-NIL1"
+                        placeholder="ECO-2026-XXXX"
                         className="flex-1 px-3 py-2.5 bg-[#0a0a0a] border border-[#3a3a3f] text-[#ffffff]"
                       />
                       <button type="submit" disabled={lookupLoading} className="btn-spacex">
@@ -338,34 +346,92 @@ export default function RecyclerPage() {
               )}
             </div>
 
-            {/* Right: Presets (5 cols) */}
+            {/* Right: Consignments Sidebar with Tabbed View (5 cols) */}
             <div className="lg:col-span-5 border border-[#3a3a3f] bg-[#000000] p-6 space-y-4">
-              <div className="border-b border-[#3a3a3f] pb-3">
-                <span className="spacex-caption block">// INBOUND ARRIVALS</span>
-                <h3 className="font-['D-DIN-Bold'] text-lg uppercase text-[#ffffff] mt-1">
-                  CONSIGNMENTS IN TRANSIT ({itemsAwaitingRecycling.length})
-                </h3>
+              {/* Tab Header */}
+              <div className="grid grid-cols-2 border-b border-[#3a3a3f] text-xs font-['D-DIN-Bold'] uppercase">
+                <button
+                  type="button"
+                  onClick={() => setSidebarTab('inbound')}
+                  className={`pb-3 border-b-2 transition-colors ${
+                    sidebarTab === 'inbound'
+                      ? 'border-[#ffffff] text-[#ffffff]'
+                      : 'border-transparent text-[#5a5a5f] hover:text-[#ffffff]'
+                  }`}
+                >
+                  In Transit ({itemsAwaitingRecycling.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSidebarTab('certified')}
+                  className={`pb-3 border-b-2 transition-colors ${
+                    sidebarTab === 'certified'
+                      ? 'border-emerald-400 text-emerald-400'
+                      : 'border-transparent text-[#5a5a5f] hover:text-[#ffffff]'
+                  }`}
+                >
+                  Certified ({certifiedRecycledItems.length})
+                </button>
               </div>
 
-              <div className="space-y-2 max-h-[380px] overflow-y-auto font-mono text-xs">
-                {itemsAwaitingRecycling.length === 0 ? (
-                  <p className="spacex-caption py-8 text-center">NO INBOUND CONSIGNMENTS PENDING.</p>
-                ) : (
-                  itemsAwaitingRecycling.map((item) => (
-                    <button
-                      key={item._id || item.trackingCode}
-                      onClick={() => handleScannedData(item.trackingCode)}
-                      className="w-full text-left p-3 border border-[#3a3a3f] hover:border-[#ffffff] bg-[#0a0a0a] transition-colors flex items-center justify-between"
-                    >
-                      <div>
-                        <div className="font-bold text-[#ffffff]">{item.trackingCode}</div>
-                        <div className="text-[11px] text-[#5a5a5f] uppercase mt-0.5">{item.type} • {item.actualWeight || item.approxWeight} KG</div>
+              {sidebarTab === 'inbound' ? (
+                <div className="space-y-2 max-h-[380px] overflow-y-auto font-mono text-xs">
+                  {itemsAwaitingRecycling.length === 0 ? (
+                    <p className="spacex-caption py-8 text-center">NO INBOUND CONSIGNMENTS PENDING.</p>
+                  ) : (
+                    itemsAwaitingRecycling.map((item) => (
+                      <button
+                        key={item._id || item.trackingCode}
+                        onClick={() => handleScannedData(item.trackingCode)}
+                        className="w-full text-left p-3 border border-[#3a3a3f] hover:border-[#ffffff] bg-[#0a0a0a] transition-colors flex items-center justify-between"
+                      >
+                        <div>
+                          <div className="font-bold text-[#ffffff]">{item.trackingCode}</div>
+                          <div className="text-[11px] text-[#5a5a5f] uppercase mt-0.5">
+                            {item.type} • {item.actualWeight || item.approxWeight} KG
+                          </div>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-[#5a5a5f]" />
+                      </button>
+                    ))
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-[380px] overflow-y-auto font-mono text-xs">
+                  {certifiedRecycledItems.length === 0 ? (
+                    <p className="spacex-caption py-8 text-center">NO CERTIFIED ITEMS YET.</p>
+                  ) : (
+                    certifiedRecycledItems.map((item) => (
+                      <div
+                        key={item._id || item.trackingCode}
+                        className="p-3 border border-emerald-500/40 bg-[#0a0a0a] flex items-center justify-between"
+                      >
+                        <div>
+                          <div className="font-bold text-[#ffffff] flex items-center gap-1.5">
+                            <span>{item.trackingCode}</span>
+                            <span className="text-[10px] text-emerald-400 font-normal">✓ CERTIFIED</span>
+                          </div>
+                          <div className="text-[11px] text-[#8a8a93] uppercase mt-0.5">
+                            {item.userName} • {item.type} ({item.actualWeight || item.approxWeight} KG)
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            setSelectedCertItem(item);
+                            setIsCertModalOpen(true);
+                          }}
+                          className="btn-spacex py-1 px-2.5 text-[11px] border-emerald-400 text-emerald-300 hover:bg-emerald-500/20"
+                          title="Download Official Certificate"
+                        >
+                          <Award className="w-3.5 h-3.5" />
+                          <span>Certificate</span>
+                        </button>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-[#5a5a5f]" />
-                    </button>
-                  ))
-                )}
-              </div>
+                    ))
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ) : (
@@ -384,15 +450,56 @@ export default function RecyclerPage() {
             </div>
 
             {submitSuccess ? (
-              <div className="space-y-4 font-mono text-xs">
-                <div className="border border-[#ffffff] p-6 bg-[#000000] text-center space-y-2">
-                  <CheckCircle2 className="w-8 h-8 text-[#ffffff] mx-auto mb-2" />
-                  <div className="font-['D-DIN-Bold'] text-xl uppercase text-[#ffffff]">RECYCLING OFFICIALLY CERTIFIED</div>
-                  <p className="text-[#5a5a5f]">Terminal status recorded in permanent NAAC Criterion 7 ledger.</p>
+              <div className="space-y-6 font-mono text-xs">
+                {/* Official Certificate Generated Card */}
+                <div className="border-2 border-emerald-500 bg-[#001408] p-6 text-center space-y-4">
+                  <div className="w-12 h-12 bg-emerald-500/20 border border-emerald-400 rounded-full flex items-center justify-center mx-auto text-emerald-400">
+                    <Award className="w-6 h-6" />
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold tracking-[2px] text-emerald-400 uppercase block mb-1">
+                      // CPCB STATUTORY EPR DESTRUCTION ATTESTATION
+                    </span>
+                    <h3 className="font-['D-DIN-Bold'] text-2xl uppercase text-[#ffffff]">
+                      RECYCLING CERTIFICATE SUCCESSFULLY ISSUED
+                    </h3>
+                    <p className="text-[#a1a1aa] text-xs mt-1">
+                      CPCB Green Recycling Certificate generated for unit <strong className="text-[#ffffff]">{scannedItem.trackingCode}</strong>.
+                    </p>
+                  </div>
+
+                  {/* Primary Certificate Download Action Button */}
+                  <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
+                    <button
+                      onClick={() => {
+                        setSelectedCertItem(scannedItem);
+                        setIsCertModalOpen(true);
+                      }}
+                      className="btn-spacex py-3 px-6 bg-emerald-500 text-black hover:bg-emerald-400 font-bold text-sm tracking-wider flex items-center justify-center gap-2"
+                    >
+                      <Award className="w-4 h-4" />
+                      <span>VIEW &amp; DOWNLOAD OFFICIAL CERTIFICATE (PDF)</span>
+                    </button>
+                  </div>
                 </div>
-                <button onClick={resetScanner} className="btn-spacex w-full py-3">
-                  <span>DISPATCH ANOTHER CONSIGNMENT</span>
-                </button>
+
+                <div className="flex justify-between items-center pt-2">
+                  <button
+                    onClick={() => {
+                      setSelectedCertItem(scannedItem);
+                      setIsCertModalOpen(true);
+                    }}
+                    className="btn-spacex-muted btn-spacex py-2 text-xs"
+                  >
+                    <Printer className="w-3.5 h-3.5 mr-1" />
+                    <span>Print Certificate</span>
+                  </button>
+
+                  <button onClick={resetScanner} className="btn-spacex py-2 px-6">
+                    <span>DISPATCH ANOTHER CONSIGNMENT</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleMarkRecycled} className="space-y-6 font-mono text-xs">
@@ -430,7 +537,8 @@ export default function RecyclerPage() {
                   />
                 </div>
 
-                <button type="submit" disabled={submitLoading} className="btn-spacex w-full py-3">
+                <button type="submit" disabled={submitLoading} className="btn-spacex w-full py-3 bg-[#ffffff] text-[#000000] hover:bg-[#e0e0e0] font-bold text-sm">
+                  <Award className="w-4 h-4 mr-2" />
                   <span>{submitLoading ? 'ISSUING CERTIFICATE...' : 'ISSUE CPCB GREEN CERTIFICATE'}</span>
                 </button>
               </form>
@@ -438,6 +546,14 @@ export default function RecyclerPage() {
           </div>
         )}
       </main>
+
+      {/* Certificate Viewer & Download Modal */}
+      <CertificateModal
+        item={selectedCertItem || scannedItem}
+        isOpen={isCertModalOpen}
+        onClose={() => setIsCertModalOpen(false)}
+        facilityName={facility}
+      />
     </div>
   );
 }
